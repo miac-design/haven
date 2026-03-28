@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAVEN | Hospitality Anti-trafficking Vigilance & Early-warning Network</title>
+    <meta name="description"
+        content="Privacy-preserving federated learning platform enabling hotels to share trafficking pattern intelligence without exposing guest data.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Professional SVG Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23468f7f'/%3E%3Cstop offset='100%25' stop-color='%232e5c53'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 5 L90 25 L90 65 C90 80 70 95 50 95 C30 95 10 80 10 65 L10 25 Z' fill='url(%23g)'/%3E%3Cpath d='M50 20 L70 32 L70 55 C70 65 60 75 50 75 C40 75 30 65 30 55 L30 32 Z' fill='white' opacity='0.9'/%3E%3Ccircle cx='50' cy='45' r='8' fill='%23468f7f'/%3E%3C/svg%3E">
+</head>
+
+<body>
+    <!-- Ambient Background -->
+    <div class="ambient-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <!-- Custom SVG Logo -->
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#5fa899" />
+                            <stop offset="100%" stop-color="#367366" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M20 2 L36 10 L36 26 C36 33 28 38 20 38 C12 38 4 33 4 26 L4 10 Z" fill="url(#logoGrad)" />
+                    <path d="M20 10 L28 14.5 L28 23 C28 27 24 30 20 30 C16 30 12 27 12 23 L12 14.5 Z" fill="white"
+                        opacity="0.95" />
+                    <circle cx="20" cy="19" r="4" fill="#468f7f" />
+                </svg>
+                <span class="logo-text">HAVEN</span>
+            </a>
+            <div class="nav-links">
+                <a href="#how-it-works">How It Works</a>
+                <a href="#demo">Live Demo</a>
+                <a href="#privacy">Privacy</a>
+                <a href="mailto:team@austinaihub.com" class="nav-cta">Contact Us</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Federated Learning • Privacy-First • Zero Guest Data Shared
+            </div>
+            <p class="hero-acronym">
+                <strong>H</strong>ospitality <strong>A</strong>nti-trafficking <strong>V</strong>igilance &
+                <strong>E</strong>arly-warning <strong>N</strong>etwork
+            </p>
+            <h1 class="hero-title">
+                Protect Guests.<br>
+                <span class="gradient-text">Share Intelligence.</span><br>
+                Preserve Privacy.
+            </h1>
+            <p class="hero-subtitle">
+                HAVEN enables hotels to collectively identify trafficking patterns
+                <strong>without ever sharing guest data</strong>. Our federated learning
+                approach keeps sensitive information on-premise while building a
+                shared intelligence network across the hospitality industry.
+            </p>
+            <div class="hero-actions">
+                <a href="#demo" class="btn btn-primary">
+                    <span>See Live Demo</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="#how-it-works" class="btn btn-secondary">Learn How It Works</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value">75%</span>
+                    <span class="stat-label">of trafficking survivors report hotel contact</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-value">0</span>
+                    <span class="stat-label">guest PII leaves your property</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">privacy-preserving by design</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="network-visualization" id="networkViz">
+                <!-- Animated network nodes will be rendered here by JS -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Problem Section -->
+    <section class="section problem-section" id="problem">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">The Problem</span>
+                <h2 class="section-title">Hotels Are Data Silos</h2>
+                <p class="section-subtitle">
+                    When one hotel identifies suspicious activity, that intelligence never reaches
+                    neighboring properties. Traffickers simply relocate—and the cycle continues.
+                </p>
+            </div>
+            <div class="problem-visual">
+                <div class="problem-scenario">
+                    <div class="scenario-step">
+                        <div class="step-icon danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 9v4M12 17h.01" />
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <h4>Hotel A Detects</h4>
+                            <p>Suspicious booking pattern identified</p>
+                        </div>
+                    </div>
+                    <div class="scenario-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div class="scenario-step">
+                        <div class="step-icon warning">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <h4>Guest Leaves</h4>
+                            <p>Moves to another property</p>
+                        </div>
+                    </div>
+                    <div class="scenario-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div class="scenario-step">
+                        <div class="step-icon danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
+                                <path d="M12 17h.01" />
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <h4>Hotel B Unaware</h4>
+                            <p>No intelligence shared</p>
+                        </div>
+                    </div>
+                    <div class="scenario-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div class="scenario-step">
+                        <div class="step-icon danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10" />
+                                <polyline points="1 20 1 14 7 14" />
+                                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+                            </svg>
+                        </div>
+                        <div class="step-content">
+                            <h4>Cycle Repeats</h4>
+                            <p>Trafficker operates freely</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="section solution-section" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">The Solution</span>
+                <h2 class="section-title">Federated Intelligence Sharing</h2>
+                <p class="section-subtitle">
+                    HAVEN uses federated learning—the same technology that powers privacy-preserving
+                    AI on your smartphone—to share pattern intelligence without sharing data.
+                </p>
+            </div>
+
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2" />
+                            <path d="M16 24h16M24 16v16" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                            <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3>On-Premise Analysis</h3>
+                    <p>Your guest data never leaves your property. HAVEN analyzes booking patterns locally, extracting
+                        only behavioral signals—not identities.</p>
+                </div>
+
+                <div class="solution-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" />
+                            <circle cx="36" cy="12" r="4" stroke="currentColor" stroke-width="2" />
+                            <circle cx="12" cy="36" r="4" stroke="currentColor" stroke-width="2" />
+                            <circle cx="36" cy="36" r="4" stroke="currentColor" stroke-width="2" />
+                            <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="2" fill="currentColor"
+                                fill-opacity="0.1" />
+                            <path d="M16 12h4M28 12h4M12 16v4M36 16v4M12 28v4M36 28v4M16 36h4M28 36h4"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h3>Federated Learning</h3>
+                    <p>Hotels share model updates (mathematical gradients), not raw data. The collective model improves
+                        without any single property seeing others' guests.</p>
+                </div>
+
+                <div class="solution-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <path d="M24 8v8M24 32v8M8 24h8M32 24h8" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                            <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="2" />
+                            <path d="M24 18l4 6-4 6-4-6 4-6z" fill="currentColor" fill-opacity="0.2"
+                                stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3>Real-Time Risk Scores</h3>
+                    <p>When a booking matches learned trafficking patterns across the network, your property receives an
+                        alert—even if you've never seen that pattern before.</p>
+                </div>
+
+                <div class="solution-card featured">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <path d="M24 4L40 12v14c0 10-8 16-16 18-8-2-16-8-16-18V12L24 4z" stroke="currentColor"
+                                stroke-width="2" />
+                            <path d="M16 24l6 6 10-12" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3>Zero Trust Architecture</h3>
+                    <p>Even HAVEN's central coordinator cannot reconstruct guest data. Differential privacy guarantees
+                        mathematical protection.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Animated How It Works Section -->
+    <section class="section animated-explainer-section" id="explainer">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">The Process</span>
+                <h2 class="section-title">How HAVEN Works in 3 Steps</h2>
+                <p class="section-subtitle">
+                    An automated, privacy-preserving cycle that protects guests across the entire network
+                </p>
+            </div>
+
+            <div class="explainer-carousel">
+                <!-- Progress Indicators -->
+                <div class="carousel-progress">
+                    <button class="progress-step active" data-step="0">
+                        <span class="step-number">1</span>
+                        <span class="step-label">Analyze</span>
+                    </button>
+                    <div class="progress-line">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <button class="progress-step" data-step="1">
+                        <span class="step-number">2</span>
+                        <span class="step-label">Share</span>
+                    </button>
+                    <div class="progress-line">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <button class="progress-step" data-step="2">
+                        <span class="step-number">3</span>
+                        <span class="step-label">Protect</span>
+                    </button>
+                </div>
+
+                <!-- Carousel Slides -->
+                <div class="carousel-container">
+                    <!-- Step 1: Analyze Locally -->
+                    <div class="carousel-slide active" data-step="0">
+                        <div class="slide-visual">
+                            <div class="hotel-node main-hotel">
+                                <div class="hotel-icon-svg">
+                                    <svg viewBox="0 0 64 64" fill="none">
+                                        <rect x="8" y="20" width="48" height="36" rx="4" fill="url(#hotelGrad1)" />
+                                        <rect x="14" y="28" width="10" height="10" rx="2" fill="white" opacity="0.9" />
+                                        <rect x="27" y="28" width="10" height="10" rx="2" fill="white" opacity="0.9" />
+                                        <rect x="40" y="28" width="10" height="10" rx="2" fill="white" opacity="0.9" />
+                                        <rect x="14" y="42" width="10" height="10" rx="2" fill="white" opacity="0.9" />
+                                        <rect x="40" y="42" width="10" height="10" rx="2" fill="white" opacity="0.9" />
+                                        <rect x="26" y="44" width="12" height="12" rx="2" fill="url(#doorGrad)" />
+                                        <path d="M24 20 L32 8 L40 20" fill="url(#hotelGrad1)" />
+                                        <defs>
+                                            <linearGradient id="hotelGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#468f7f" />
+                                                <stop offset="100%" stop-color="#2d5a50" />
+                                            </linearGradient>
+                                            <linearGradient id="doorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stop-color="#fbbf24" />
+                                                <stop offset="100%" stop-color="#f59e0b" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <div class="data-orbit">
+                                    <div class="data-point" style="--delay: 0s">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#468f7f" stroke-width="2">
+                                            <path d="M3 3v18h18" />
+                                            <path d="M18 9l-5 5-4-4-3 3" />
+                                        </svg>
+                                    </div>
+                                    <div class="data-point" style="--delay: 0.5s">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#468f7f" stroke-width="2">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                                            <path d="M7 11V7a5 5 0 0110 0v4" />
+                                        </svg>
+                                    </div>
+                                    <div class="data-point" style="--delay: 1s">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#468f7f" stroke-width="2">
+                                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                                            <path d="M9 9h6M9 13h4" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="lock-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" />
+                                        <path d="M7 11V7a5 5 0 0110 0v4" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide-content">
+                            <h3>1. Analyze Locally</h3>
+                            <p>Your guest data <strong>never leaves your property</strong>. HAVEN analyzes booking
+                                patterns on-premise, extracting only behavioral signals—not identities.</p>
+                            <ul class="slide-features">
+                                <li>✓ Data stays on your servers</li>
+                                <li>✓ Real-time pattern analysis</li>
+                                <li>✓ No PII transmitted</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Share Intelligence -->
+                    <div class="carousel-slide" data-step="1">
+                        <div class="slide-visual">
+                            <div class="network-share">
+                                <div class="share-hotel left">
+                                    <svg viewBox="0 0 40 40" fill="none">
+                                        <rect x="4" y="12" width="32" height="24" rx="3" fill="url(#nodeGrad1)" />
+                                        <rect x="8" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="17" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="26" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="16" y="28" width="8" height="8" rx="1" fill="#fbbf24" />
+                                        <defs>
+                                            <linearGradient id="nodeGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#5ba393" />
+                                                <stop offset="100%" stop-color="#3d7268" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <div class="share-hotel right">
+                                    <svg viewBox="0 0 40 40" fill="none">
+                                        <rect x="4" y="12" width="32" height="24" rx="3" fill="url(#nodeGrad2)" />
+                                        <rect x="8" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="17" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="26" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="16" y="28" width="8" height="8" rx="1" fill="#fbbf24" />
+                                        <defs>
+                                            <linearGradient id="nodeGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#5ba393" />
+                                                <stop offset="100%" stop-color="#3d7268" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <div class="share-hotel top">
+                                    <svg viewBox="0 0 40 40" fill="none">
+                                        <rect x="4" y="12" width="32" height="24" rx="3" fill="url(#nodeGrad3)" />
+                                        <rect x="8" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="17" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="26" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                        <rect x="16" y="28" width="8" height="8" rx="1" fill="#fbbf24" />
+                                        <defs>
+                                            <linearGradient id="nodeGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#5ba393" />
+                                                <stop offset="100%" stop-color="#3d7268" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <div class="central-node">
+                                    <div class="node-core">
+                                        <svg viewBox="0 0 48 48" fill="none">
+                                            <circle cx="24" cy="24" r="22" fill="url(#shieldGrad)" />
+                                            <path
+                                                d="M24 8 L36 14 L36 26 C36 32 30 38 24 40 C18 38 12 32 12 26 L12 14 L24 8Z"
+                                                fill="white" opacity="0.9" />
+                                            <path d="M20 24 L23 27 L28 20" stroke="#468f7f" stroke-width="2.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <defs>
+                                                <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stop-color="#468f7f" />
+                                                    <stop offset="100%" stop-color="#2d5a50" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                    <div class="node-ring"></div>
+                                </div>
+                                <div class="gradient-flow flow-1"></div>
+                                <div class="gradient-flow flow-2"></div>
+                                <div class="gradient-flow flow-3"></div>
+                            </div>
+                        </div>
+                        <div class="slide-content">
+                            <h3>2. Share Intelligence</h3>
+                            <p>Hotels share <strong>model updates (mathematical gradients)</strong>, not raw data. The
+                                collective model improves without anyone seeing others' guests.</p>
+                            <ul class="slide-features">
+                                <li>✓ Only gradients transmitted</li>
+                                <li>✓ Federated averaging</li>
+                                <li>✓ Differential privacy applied</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Protect Together -->
+                    <div class="carousel-slide" data-step="2">
+                        <div class="slide-visual">
+                            <div class="protection-grid">
+                                <div class="protected-hotel" style="--delay: 0s">
+                                    <span class="hotel-svg-icon">
+                                        <svg viewBox="0 0 40 40" fill="none">
+                                            <rect x="4" y="12" width="32" height="24" rx="3" fill="#468f7f" />
+                                            <rect x="8" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                            <rect x="17" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="26" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="16" y="28" width="8" height="8" rx="1" fill="#fbbf24" />
+                                        </svg>
+                                    </span>
+                                    <span class="shield-svg-icon">
+                                        <svg viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 2 L20 6 L20 12 C20 16 16 20 12 22 C8 20 4 16 4 12 L4 6 L12 2Z"
+                                                fill="url(#shieldPulse1)" />
+                                            <path d="M9 12 L11 14 L15 9" stroke="white" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <defs>
+                                                <linearGradient id="shieldPulse1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stop-color="#468f7f" />
+                                                    <stop offset="100%" stop-color="#2d5a50" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="protected-hotel" style="--delay: 0.2s">
+                                    <span class="hotel-svg-icon">
+                                        <svg viewBox="0 0 40 40" fill="none">
+                                            <rect x="4" y="12" width="32" height="24" rx="3" fill="#468f7f" />
+                                            <rect x="8" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                            <rect x="17" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="26" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="16" y="28" width="8" height="8" rx="1" fill="#fbbf24" />
+                                        </svg>
+                                    </span>
+                                    <span class="shield-svg-icon">
+                                        <svg viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 2 L20 6 L20 12 C20 16 16 20 12 22 C8 20 4 16 4 12 L4 6 L12 2Z"
+                                                fill="url(#shieldPulse2)" />
+                                            <path d="M9 12 L11 14 L15 9" stroke="white" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <defs>
+                                                <linearGradient id="shieldPulse2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stop-color="#468f7f" />
+                                                    <stop offset="100%" stop-color="#2d5a50" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="protected-hotel" style="--delay: 0.4s">
+                                    <span class="hotel-svg-icon">
+                                        <svg viewBox="0 0 40 40" fill="none">
+                                            <rect x="4" y="12" width="32" height="24" rx="3" fill="#468f7f" />
+                                            <rect x="8" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                            <rect x="17" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="26" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="16" y="28" width="8" height="8" rx="1" fill="#fbbf24" />
+                                        </svg>
+                                    </span>
+                                    <span class="shield-svg-icon">
+                                        <svg viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 2 L20 6 L20 12 C20 16 16 20 12 22 C8 20 4 16 4 12 L4 6 L12 2Z"
+                                                fill="url(#shieldPulse3)" />
+                                            <path d="M9 12 L11 14 L15 9" stroke="white" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <defs>
+                                                <linearGradient id="shieldPulse3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stop-color="#468f7f" />
+                                                    <stop offset="100%" stop-color="#2d5a50" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="protected-hotel" style="--delay: 0.6s">
+                                    <span class="hotel-svg-icon">
+                                        <svg viewBox="0 0 40 40" fill="none">
+                                            <rect x="4" y="12" width="32" height="24" rx="3" fill="#468f7f" />
+                                            <rect x="8" y="16" width="6" height="6" rx="1" fill="white" opacity="0.8" />
+                                            <rect x="17" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="26" y="16" width="6" height="6" rx="1" fill="white"
+                                                opacity="0.8" />
+                                            <rect x="16" y="28" width="8" height="8" rx="1" fill="#fbbf24" />
+                                        </svg>
+                                    </span>
+                                    <span class="shield-svg-icon">
+                                        <svg viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 2 L20 6 L20 12 C20 16 16 20 12 22 C8 20 4 16 4 12 L4 6 L12 2Z"
+                                                fill="url(#shieldPulse4)" />
+                                            <path d="M9 12 L11 14 L15 9" stroke="white" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <defs>
+                                                <linearGradient id="shieldPulse4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stop-color="#468f7f" />
+                                                    <stop offset="100%" stop-color="#2d5a50" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="alert-wave"></div>
+                            </div>
+                        </div>
+                        <div class="slide-content">
+                            <h3>3. Protect Together</h3>
+                            <p>When a booking matches learned trafficking patterns, <strong>your property receives an
+                                    alert</strong>—even if you've never seen that pattern before.</p>
+                            <ul class="slide-features">
+                                <li>✓ Real-time risk alerts</li>
+                                <li>✓ Network-wide protection</li>
+                                <li>✓ Humans remain in the loop</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button class="carousel-nav prev" aria-label="Previous step">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
+                <button class="carousel-nav next" aria-label="Next step">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Auto-play and Music controls -->
+            <div class="carousel-controls">
+                <button class="autoplay-toggle" id="autoplayToggle">
+                    <span class="toggle-icon playing">⏸</span>
+                    <span class="toggle-icon paused" style="display:none">▶</span>
+                    <span class="toggle-label">Auto-play</span>
+                </button>
+                <button class="music-toggle-inline" id="musicToggle" aria-label="Toggle background music">
+                    <span class="music-icon playing" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13" />
+                            <circle cx="6" cy="18" r="3" />
+                            <circle cx="18" cy="16" r="3" />
+                        </svg>
+                    </span>
+                    <span class="music-icon paused">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13" />
+                            <circle cx="6" cy="18" r="3" />
+                            <circle cx="18" cy="16" r="3" />
+                            <line x1="1" y1="1" x2="23" y2="23" stroke-width="2.5" />
+                        </svg>
+                    </span>
+                    <span class="toggle-label">Music</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section class="section demo-section" id="demo">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Live Demonstration</span>
+                <h2 class="section-title">See Federated Learning in Action</h2>
+                <p class="section-subtitle">
+                    This simulation shows how HAVEN's federated model learns across a network of
+                    properties without any guest data leaving individual hotels.
+                </p>
+            </div>
+
+            <div class="demo-container">
+                <!-- Network Visualization Panel -->
+                <div class="demo-panel network-panel">
+                    <div class="panel-header">
+                        <h3>Property Network</h3>
+                        <div class="panel-status">
+                            <span class="status-dot active"></span>
+                            <span id="networkStatus">Ready</span>
+                        </div>
+                    </div>
+                    <div class="network-grid" id="networkGrid">
+                        <!-- Properties will be rendered here -->
+                    </div>
+                    <div class="network-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot training"></span>
+                            <span>Training Locally</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot sending"></span>
+                            <span>Sharing Updates</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot receiving"></span>
+                            <span>Receiving Model</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Central Coordinator Panel -->
+                <div class="demo-panel coordinator-panel">
+                    <div class="panel-header">
+                        <h3>Federated Coordinator</h3>
+                        <div class="panel-badge">Privacy-Preserving</div>
+                    </div>
+                    <div class="coordinator-viz">
+                        <div class="model-ring" id="modelRing">
+                            <div class="ring-progress" id="ringProgress"></div>
+                            <div class="ring-center">
+                                <span class="ring-value" id="modelAccuracy">0%</span>
+                                <span class="ring-label">Model Accuracy</span>
+                            </div>
+                        </div>
+                        <div class="coordinator-stats">
+                            <div class="coord-stat">
+                                <span class="coord-value" id="roundNumber">0</span>
+                                <span class="coord-label">Training Rounds</span>
+                            </div>
+                            <div class="coord-stat">
+                                <span class="coord-value" id="gradientCount">0</span>
+                                <span class="coord-label">Insights Shared</span>
+                            </div>
+                            <div class="coord-stat">
+                                <span class="coord-value" id="patternsLearned">0</span>
+                                <span class="coord-label">Patterns Identified</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="privacy-indicator">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <span>Zero guest data accessed</span>
+                    </div>
+                </div>
+
+                <!-- Risk Assessment Panel -->
+                <div class="demo-panel risk-panel">
+                    <div class="panel-header">
+                        <h3>Real-Time Risk Assessment</h3>
+                        <button class="btn btn-small" id="newBookingBtn">Simulate New Booking</button>
+                    </div>
+                    <div class="booking-form" id="bookingForm">
+                        <div class="form-row">
+                            <label>Lead Time</label>
+                            <select id="leadTime">
+                                <option value="168">1 week advance</option>
+                                <option value="48">2 days advance</option>
+                                <option value="6">Same day</option>
+                                <option value="2">2 hours</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Payment Method</label>
+                            <select id="paymentMethod">
+                                <option value="credit">Credit Card</option>
+                                <option value="debit">Debit Card</option>
+                                <option value="prepaid">Prepaid Card</option>
+                                <option value="cash">Cash</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Stay Duration</label>
+                            <select id="stayDuration">
+                                <option value="3">3 nights</option>
+                                <option value="1">1 night</option>
+                                <option value="0.5">Few hours</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Booking Source</label>
+                            <select id="bookingSource">
+                                <option value="direct">Direct (Hotel Website)</option>
+                                <option value="ota">OTA (Booking.com, etc.)</option>
+                                <option value="walkin">Walk-in</option>
+                                <option value="thirdparty">Third-Party Booker</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-full" id="assessBtn">Assess Risk</button>
+                    </div>
+                    <div class="risk-result" id="riskResult">
+                        <div class="risk-score-display">
+                            <div class="risk-gauge" id="riskGauge">
+                                <div class="gauge-fill" id="gaugeFill"></div>
+                                <div class="gauge-needle" id="gaugeNeedle"></div>
+                            </div>
+                            <div class="risk-value" id="riskValue">—</div>
+                            <div class="risk-label" id="riskLabel">Risk Level</div>
+                        </div>
+                        <div class="risk-factors" id="riskFactors">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="risk-recommendation" id="riskRecommendation">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Controls -->
+            <div class="demo-controls">
+                <button class="btn btn-primary btn-large" id="startTrainingBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    Start Federated Training
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">Reset Simulation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy Section -->
+    <section class="section privacy-section" id="privacy">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Privacy by Design</span>
+                <h2 class="section-title">Your Guests' Data Never Leaves</h2>
+            </div>
+
+            <div class="privacy-comparison">
+                <div class="privacy-column traditional">
+                    <div class="column-header danger">
+                        <h3>Traditional Approach</h3>
+                        <span class="column-badge danger">High Risk</span>
+                    </div>
+                    <ul class="privacy-list">
+                        <li class="bad">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M15 9l-6 6M9 9l6 6" />
+                            </svg>
+                            Guest data sent to central server
+                        </li>
+                        <li class="bad">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M15 9l-6 6M9 9l6 6" />
+                            </svg>
+                            PII exposed in transit and storage
+                        </li>
+                        <li class="bad">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M15 9l-6 6M9 9l6 6" />
+                            </svg>
+                            Single breach exposes all hotels
+                        </li>
+                        <li class="bad">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M15 9l-6 6M9 9l6 6" />
+                            </svg>
+                            GDPR/CCPA compliance challenges
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="privacy-column haven">
+                    <div class="column-header success">
+                        <h3>HAVEN Approach</h3>
+                        <span class="column-badge success">Privacy-First</span>
+                    </div>
+                    <ul class="privacy-list">
+                        <li class="good">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M8 12l3 3 5-6" />
+                            </svg>
+                            Only model gradients leave property
+                        </li>
+                        <li class="good">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M8 12l3 3 5-6" />
+                            </svg>
+                            Differential privacy guarantees
+                        </li>
+                        <li class="good">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M8 12l3 3 5-6" />
+                            </svg>
+                            No central data store to breach
+                        </li>
+                        <li class="good">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M8 12l3 3 5-6" />
+                            </svg>
+                            GDPR/CCPA compliant by design
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Section -->
+    <section class="section research-section" id="research">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Academic Foundation</span>
+                <h2 class="section-title">Built on Rigorous Research</h2>
+            </div>
+
+            <div class="research-grid">
+                <div class="research-card">
+                    <div class="research-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.21 15.89A10 10 0 118 2.83" />
+                            <path d="M22 12A10 10 0 0012 2v10z" />
+                        </svg>
+                    </div>
+                    <h4>Federated Learning Architecture</h4>
+                    <p>Based on Google's Federated Averaging algorithm, enhanced with Byzantine-robust aggregation for
+                        adversarial resilience.</p>
+                </div>
+                <div class="research-card">
+                    <div class="research-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                            <path d="M7 11V7a5 5 0 0110 0v4" />
+                        </svg>
+                    </div>
+                    <h4>Differential Privacy</h4>
+                    <p>Mathematical privacy guarantees using ε-differential privacy, ensuring no individual booking can
+                        be reconstructed.</p>
+                </div>
+                <div class="research-card">
+                    <div class="research-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 21h18M5 21V7l7-4 7 4v14" />
+                            <path d="M9 21v-6h6v6M9 9h6M9 13h6" />
+                        </svg>
+                    </div>
+                    <h4>Hospitality Signals</h4>
+                    <p>Multi-layer signal taxonomy covering booking patterns, check-in behaviors, in-stay anomalies, and
+                        cross-property network patterns.</p>
+                </div>
+                <div class="research-card">
+                    <div class="research-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                    </div>
+                    <h4>Bias Mitigation</h4>
+                    <p>Human-in-the-loop safeguards, staff feedback loops for false positive correction, and no
+                        single-factor alerts.</p>
+                </div>
+            </div>
+
+            <div class="patent-notice">
+                <div class="patent-badge">
+                    <span>Innovation Protected</span>
+                </div>
+                <p>HAVEN's federated learning approach for hospitality anti-trafficking represents novel intellectual
+                    property.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FAQ Section -->
+    <section class="section faq-section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Common Questions</span>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How does HAVEN protect guest privacy?</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="faq-icon">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>HAVEN uses federated learning—a privacy-preserving AI technique. Your guest data never leaves
+                            your property. Only mathematical model updates (gradients) are shared with the network, and
+                            these cannot be reverse-engineered to identify individuals. We also apply differential
+                            privacy, adding mathematical noise that provides provable privacy guarantees.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Is HAVEN GDPR and CCPA compliant?</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="faq-icon">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. Because no personal data is centralized or shared, HAVEN is compliant by design. There's
+                            no "data transfer" in the regulatory sense—only statistical model updates. This makes HAVEN
+                            significantly easier to deploy across jurisdictions compared to traditional centralized
+                            approaches.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What signals does HAVEN analyze?</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="faq-icon">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>HAVEN analyzes behavioral booking signals—not identities. This includes lead time (how far in
+                            advance the booking was made), payment method, stay duration, booking source, and other
+                            patterns that research shows correlate with trafficking activity. The system learns which
+                            combinations of signals indicate elevated risk.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How do I integrate HAVEN with my property management system?</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="faq-icon">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>HAVEN is designed to integrate with major PMS platforms including Opera, Mews, and Cloudbeds
+                            via secure API connections. For on-premise systems, we offer a lightweight agent that runs
+                            locally. Integration typically takes less than one day. Contact us to discuss your specific
+                            setup.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What happens when HAVEN identifies a high-risk booking?</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="faq-icon">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>HAVEN provides risk scores and explanations to your staff—not automated actions. Humans
+                            remain in the loop for all guest-facing decisions. Elevated risk triggers enhanced
+                            monitoring protocols and, at high thresholds, staff may be prompted to conduct discreet
+                            welfare checks following established anti-trafficking training guidelines.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How can I join the pilot program?</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="faq-icon">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We're currently recruiting pilot partners for our 2026 launch. Hotels, vacation rental
+                            platforms, and hospitality associations interested in privacy-preserving anti-trafficking
+                            technology can request early access below. Pilot participants receive priority support and
+                            input into feature development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section" id="contact">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-badge">
+                    <span class="badge-dot"></span>
+                    Now Accepting Pilot Partners
+                </div>
+                <h2>Request Early Access</h2>
+                <p>Join the founding network of hospitality properties committed to protecting guests while preserving
+                    privacy. Pilot partners receive priority support and help shape the platform's development.</p>
+                <div class="cta-actions">
+                    <a href="mailto:team@austinaihub.com?subject=HAVEN%20Early%20Access%20Request&body=I'm%20interested%20in%20joining%20the%20HAVEN%20pilot%20program.%0A%0AProperty%20Name:%0ALocation:%0ANumber%20of%20Rooms:%0A%0APlease%20contact%20me%20to%20discuss%20participation."
+                        class="btn btn-primary btn-large">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"
+                            height="20">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                        Request Early Access
+                    </a>
+                    <a href="#demo" class="btn btn-secondary btn-large">
+                        Try the Demo First
+                    </a>
+                </div>
+                <div class="cta-trust-badges">
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                        <span>Innovation Protected</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                            <path d="M7 11V7a5 5 0 0110 0v4" />
+                        </svg>
+                        <span>Privacy-First</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M8 12l3 3 5-6" />
+                        </svg>
+                        <span>GDPR Compliant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="footerLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#5fa899" />
+                                    <stop offset="100%" stop-color="#367366" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M20 2 L36 10 L36 26 C36 33 28 38 20 38 C12 38 4 33 4 26 L4 10 Z"
+                                fill="url(#footerLogoGrad)" />
+                            <path d="M20 10 L28 14.5 L28 23 C28 27 24 30 20 30 C16 30 12 27 12 23 L12 14.5 Z"
+                                fill="white" opacity="0.95" />
+                            <circle cx="20" cy="19" r="4" fill="#468f7f" />
+                        </svg>
+                        <span class="logo-text">HAVEN</span>
+                    </div>
+                    <p>Hospitality Anti-trafficking Vigilance & Early-warning Network</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Research</h4>
+                        <a href="#privacy">Privacy Architecture</a>
+                        <a href="#how-it-works">How It Works</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="https://humantraffickinghotline.org" target="_blank">National Hotline</a>
+                        <a href="https://polarisproject.org" target="_blank">Polaris Project</a>
+                        <a href="https://www.dhs.gov/blue-campaign" target="_blank">DHS Blue Campaign</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <a href="https://themiac.com" target="_blank">themiac.com</a>
+                        <a href="https://linkedin.com/in/miacheraghian" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-author">
+                    <p>© 2026 HAVEN. A research project by <strong>Mia C.</strong> (Mahboubeh Cheraghian, PhD) · <a
+                            href="mailto:team@austinaihub.com">team@austinaihub.com</a></p>
+                    <div class="footer-social">
+                        <a href="https://linkedin.com/in/miacheraghian" target="_blank" class="social-link"
+                            aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                        </a>
+                        <a href="https://themiac.com" target="_blank" class="social-link" aria-label="Website">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path
+                                    d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p class="footer-note">If you or someone you know may be a victim of trafficking, call the National
+                    Human Trafficking Hotline: <strong>1-888-373-7888</strong></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="tech-innovative-403426.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/simulation.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
