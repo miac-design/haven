@@ -43,7 +43,7 @@
             </a>
             <div class="nav-links">
                 <a href="#how-it-works">How It Works</a>
-                <a href="#demo">Live Demo</a>
+                <a href="demo.html">Live Demo</a>
                 <a href="#privacy">Privacy</a>
                 <a href="mailto:team@austinaihub.com" class="nav-cta">Contact Us</a>
             </div>
@@ -85,7 +85,7 @@
                 shared intelligence network across the hospitality industry.
             </p>
             <div class="hero-actions">
-                <a href="#demo" class="btn btn-primary">
+                <a href="demo.html" class="btn btn-primary">
                     <span>See Live Demo</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7" />
@@ -635,163 +635,24 @@
         </div>
     </section>
 
-    <!-- Live Demo Section -->
+    <!-- Live Demo CTA -->
     <section class="section demo-section" id="demo">
         <div class="container">
             <div class="section-header">
                 <span class="section-label">Live Demonstration</span>
                 <h2 class="section-title">See Federated Learning in Action</h2>
                 <p class="section-subtitle">
-                    This simulation shows how HAVEN's federated model learns across a network of
-                    properties without any guest data leaving individual hotels.
+                    Watch how HAVEN's federated model trains across a network of hotel properties —
+                    sharing intelligence without sharing guest data.
                 </p>
             </div>
-
-            <div class="demo-container">
-                <!-- Network Visualization Panel -->
-                <div class="demo-panel network-panel">
-                    <div class="panel-header">
-                        <h3>Property Network</h3>
-                        <div class="panel-status">
-                            <span class="status-dot active"></span>
-                            <span id="networkStatus">Ready</span>
-                        </div>
-                    </div>
-                    <div class="network-grid" id="networkGrid">
-                        <!-- Properties will be rendered here -->
-                    </div>
-                    <div class="network-legend">
-                        <div class="legend-item">
-                            <span class="legend-dot training"></span>
-                            <span>Training Locally</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot sending"></span>
-                            <span>Sharing Updates</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot receiving"></span>
-                            <span>Receiving Model</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Central Coordinator Panel -->
-                <div class="demo-panel coordinator-panel">
-                    <div class="panel-header">
-                        <h3>Federated Coordinator</h3>
-                        <div class="panel-badge">Privacy-Preserving</div>
-                    </div>
-                    <div class="coordinator-viz">
-                        <div class="model-ring" id="modelRing">
-                            <div class="ring-progress" id="ringProgress"></div>
-                            <div class="ring-center">
-                                <span class="ring-value" id="modelAccuracy">0%</span>
-                                <span class="ring-label">Model Accuracy</span>
-                            </div>
-                        </div>
-                        <div class="coordinator-stats">
-                            <div class="coord-stat">
-                                <span class="coord-value" id="roundNumber">0</span>
-                                <span class="coord-label">Training Rounds</span>
-                            </div>
-                            <div class="coord-stat">
-                                <span class="coord-value" id="gradientCount">0</span>
-                                <span class="coord-label">Insights Shared</span>
-                            </div>
-                            <div class="coord-stat">
-                                <span class="coord-value" id="patternsLearned">0</span>
-                                <span class="coord-label">Patterns Identified</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="privacy-indicator">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2" />
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                        </svg>
-                        <span>Zero guest data accessed</span>
-                    </div>
-                </div>
-
-                <!-- Risk Assessment Panel -->
-                <div class="demo-panel risk-panel">
-                    <div class="panel-header">
-                        <h3>Real-Time Risk Assessment</h3>
-                        <button class="btn btn-small" id="newBookingBtn">Simulate New Booking</button>
-                    </div>
-                    <div class="booking-form" id="bookingForm">
-                        <div class="form-row">
-                            <label>Lead Time</label>
-                            <select id="leadTime">
-                                <option value="168">1 week advance</option>
-                                <option value="48">2 days advance</option>
-                                <option value="6">Same day</option>
-                                <option value="2">2 hours</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <label>Payment Method</label>
-                            <select id="paymentMethod">
-                                <option value="credit">Credit Card</option>
-                                <option value="debit">Debit Card</option>
-                                <option value="prepaid">Prepaid Card</option>
-                                <option value="cash">Cash</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <label>Stay Duration</label>
-                            <select id="stayDuration">
-                                <option value="3">3 nights</option>
-                                <option value="1">1 night</option>
-                                <option value="0.5">Few hours</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <label>Booking Source</label>
-                            <select id="bookingSource">
-                                <option value="direct">Direct (Hotel Website)</option>
-                                <option value="ota">OTA (Booking.com, etc.)</option>
-                                <option value="walkin">Walk-in</option>
-                                <option value="thirdparty">Third-Party Booker</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary btn-full" id="assessBtn">Assess Risk</button>
-                    </div>
-                    <div class="risk-result" id="riskResult">
-                        <div class="risk-score-display">
-                            <div class="risk-gauge" id="riskGauge">
-                                <div class="gauge-fill" id="gaugeFill"></div>
-                                <div class="gauge-needle" id="gaugeNeedle"></div>
-                            </div>
-                            <div class="risk-value" id="riskValue">—</div>
-                            <div class="risk-label" id="riskLabel">Risk Level</div>
-                        </div>
-                        <div class="risk-factors" id="riskFactors">
-                            <!-- Populated by JS -->
-                        </div>
-                        <div class="risk-recommendation" id="riskRecommendation">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Demo Controls -->
-            <div class="demo-controls">
-                <button class="btn btn-primary btn-large" id="startTrainingBtn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div style="text-align: center; padding: 2rem 0;">
+                <a href="demo.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" style="margin-right: 0.5rem;">
                         <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
-                    Start Federated Training
-                </button>
-                <button class="btn btn-accent btn-large" id="quickDemoBtn" title="Runs a faster 3-round demo — ideal for live presentations">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                    </svg>
-                    Quick Demo (Presentation Mode)
-                </button>
-                <button class="btn btn-secondary" id="resetBtn">Reset Simulation</button>
+                    Launch Interactive Demo
+                </a>
             </div>
         </div>
     </section>

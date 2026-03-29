@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAVEN | Interactive Demo</title>
+    <meta name="description"
+        content="Interactive demo of HAVEN's privacy-preserving federated learning platform for hotel trafficking pattern detection.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Professional SVG Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23468f7f'/%3E%3Cstop offset='100%25' stop-color='%232e5c53'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 5 L90 25 L90 65 C90 80 70 95 50 95 C30 95 10 80 10 65 L10 25 Z' fill='url(%23g)'/%3E%3Cpath d='M50 20 L70 32 L70 55 C70 65 60 75 50 75 C40 75 30 65 30 55 L30 32 Z' fill='white' opacity='0.9'/%3E%3Ccircle cx='50' cy='45' r='8' fill='%23468f7f'/%3E%3C/svg%3E">
+
+    <!-- Demo page specific overrides -->
+    <style>
+        .demo-page .demo-controls .btn {
+            font-size: 0.95rem;
+            padding: 0.75rem 1.5rem;
+        }
+        .demo-page .demo-controls .btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        .demo-page .btn-large {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+        }
+        .demo-page .demo-container {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 1.5rem;
+        }
+        .demo-page .demo-left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .demo-page .demo-panel.risk-panel {
+            grid-column: auto;
+        }
+        .demo-page .btn-full {
+            padding: 0.75rem 1.5rem;
+        }
+        .demo-page .section-header {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Demo hero intro */
+        .demo-hero {
+            padding: 6rem 0 2rem;
+            text-align: center;
+        }
+        .demo-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary, #1a2e2a);
+            margin-bottom: 1rem;
+        }
+        .demo-hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary, #4a6b63);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* How it works steps */
+        .demo-steps-section {
+            padding: 2rem 0 3rem;
+        }
+        .demo-steps-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-primary, #1a2e2a);
+            margin-bottom: 2rem;
+        }
+        .demo-steps {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .demo-step {
+            flex: 1;
+            min-width: 220px;
+            max-width: 320px;
+            text-align: center;
+        }
+        .demo-step .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5fa899, #367366);
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+        .demo-step .step-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary, #1a2e2a);
+            margin-bottom: 0.5rem;
+        }
+        .demo-step .step-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary, #4a6b63);
+            line-height: 1.6;
+        }
+
+        /* Simulation area */
+        .demo-simulation-section {
+            padding: 2rem 0 3rem;
+        }
+
+        /* Footer */
+        .demo-footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            margin-top: 2rem;
+        }
+        .demo-footer a {
+            color: var(--accent, #468f7f);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .demo-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .demo-page .demo-container {
+                grid-template-columns: 1fr;
+            }
+            .demo-steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            .demo-hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="demo-page">
+    <!-- Ambient Background -->
+    <div class="ambient-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#5fa899" />
+                            <stop offset="100%" stop-color="#367366" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M20 2 L36 10 L36 26 C36 33 28 38 20 38 C12 38 4 33 4 26 L4 10 Z" fill="url(#logoGrad)" />
+                    <path d="M20 10 L28 14.5 L28 23 C28 27 24 30 20 30 C16 30 12 27 12 23 L12 14.5 Z" fill="white"
+                        opacity="0.95" />
+                    <circle cx="20" cy="19" r="4" fill="#468f7f" />
+                </svg>
+                <span class="logo-text">HAVEN</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Intro -->
+    <section class="demo-hero">
+        <div class="container">
+            <h1>Interactive Demo</h1>
+            <p>Watch how HAVEN's federated learning model trains across a network of hotel properties — sharing intelligence without sharing guest data.</p>
+        </div>
+    </section>
+
+    <!-- How This Demo Works -->
+    <section class="demo-steps-section">
+        <div class="container">
+            <h2>How This Demo Works</h2>
+            <div class="demo-steps">
+                <div class="demo-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Start Training</div>
+                    <div class="step-desc">Each hotel trains locally on its own booking data</div>
+                </div>
+                <div class="demo-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Watch the Network</div>
+                    <div class="step-desc">Hotels share only mathematical gradients (not guest data) with the coordinator</div>
+                </div>
+                <div class="demo-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">See the Results</div>
+                    <div class="step-desc">The shared model improves pattern detection across all properties</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulation Area -->
+    <section class="section demo-section demo-simulation-section" id="demo">
+        <div class="container">
+            <div class="demo-container">
+                <!-- Left Column: Network + Coordinator stacked -->
+                <div class="demo-left-column">
+                    <!-- Network Visualization Panel -->
+                    <div class="demo-panel network-panel">
+                        <div class="panel-header">
+                            <h3>Property Network</h3>
+                            <div class="panel-status">
+                                <span class="status-dot active"></span>
+                                <span id="networkStatus">Ready</span>
+                            </div>
+                        </div>
+                        <div class="network-grid" id="networkGrid">
+                            <!-- Properties will be rendered here -->
+                        </div>
+                        <div class="network-legend">
+                            <div class="legend-item">
+                                <span class="legend-dot training"></span>
+                                <span>Training Locally</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot sending"></span>
+                                <span>Sharing Updates</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot receiving"></span>
+                                <span>Receiving Model</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Central Coordinator Panel -->
+                    <div class="demo-panel coordinator-panel">
+                        <div class="panel-header">
+                            <h3>Federated Coordinator</h3>
+                            <div class="panel-badge">Privacy-Preserving</div>
+                        </div>
+                        <div class="coordinator-viz">
+                            <div class="model-ring" id="modelRing">
+                                <div class="ring-progress" id="ringProgress"></div>
+                                <div class="ring-center">
+                                    <span class="ring-value" id="modelAccuracy">0%</span>
+                                    <span class="ring-label">Model Accuracy</span>
+                                </div>
+                            </div>
+                            <div class="coordinator-stats">
+                                <div class="coord-stat">
+                                    <span class="coord-value" id="roundNumber">0</span>
+                                    <span class="coord-label">Training Rounds</span>
+                                </div>
+                                <div class="coord-stat">
+                                    <span class="coord-value" id="gradientCount">0</span>
+                                    <span class="coord-label">Insights Shared</span>
+                                </div>
+                                <div class="coord-stat">
+                                    <span class="coord-value" id="patternsLearned">0</span>
+                                    <span class="coord-label">Patterns Identified</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="privacy-indicator">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <span>Zero guest data accessed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Risk Assessment Panel -->
+                <div class="demo-panel risk-panel">
+                    <div class="panel-header">
+                        <h3>Real-Time Risk Assessment</h3>
+                        <button class="btn btn-small" id="newBookingBtn">Simulate New Booking</button>
+                    </div>
+                    <div class="booking-form" id="bookingForm">
+                        <div class="form-row">
+                            <label>Lead Time</label>
+                            <select id="leadTime">
+                                <option value="168">1 week advance</option>
+                                <option value="48">2 days advance</option>
+                                <option value="6">Same day</option>
+                                <option value="2">2 hours</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Payment Method</label>
+                            <select id="paymentMethod">
+                                <option value="credit">Credit Card</option>
+                                <option value="debit">Debit Card</option>
+                                <option value="prepaid">Prepaid Card</option>
+                                <option value="cash">Cash</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Stay Duration</label>
+                            <select id="stayDuration">
+                                <option value="3">3 nights</option>
+                                <option value="1">1 night</option>
+                                <option value="0.5">Few hours</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Booking Source</label>
+                            <select id="bookingSource">
+                                <option value="direct">Direct (Hotel Website)</option>
+                                <option value="ota">OTA (Booking.com, etc.)</option>
+                                <option value="walkin">Walk-in</option>
+                                <option value="thirdparty">Third-Party Booker</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-full" id="assessBtn">Assess Risk</button>
+                    </div>
+                    <div class="risk-result" id="riskResult">
+                        <div class="risk-score-display">
+                            <div class="risk-gauge" id="riskGauge">
+                                <div class="gauge-fill" id="gaugeFill"></div>
+                                <div class="gauge-needle" id="gaugeNeedle"></div>
+                            </div>
+                            <div class="risk-value" id="riskValue">—</div>
+                            <div class="risk-label" id="riskLabel">Risk Level</div>
+                        </div>
+                        <div class="risk-factors" id="riskFactors">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="risk-recommendation" id="riskRecommendation">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Controls -->
+            <div class="demo-controls">
+                <button class="btn btn-primary btn-large" id="startTrainingBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    Start Federated Training
+                </button>
+                <button class="btn btn-accent btn-large" id="quickDemoBtn" title="Runs a faster 3-round demo — ideal for live presentations">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                    Quick Demo <small style="opacity: 0.8; font-weight: 400;">(3-round presentation mode)</small>
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="demo-footer">
+        <div class="container">
+            <a href="index.html">&larr; Back to HAVEN Home</a>
+        </div>
+    </footer>
+
+    <script src="js/simulation.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.HAVENSimulation) {
+                window.HAVENSimulation.init();
+            }
+        });
+    </script>
+</body>
+
+</html>
