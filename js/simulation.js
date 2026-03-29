@@ -397,11 +397,55 @@ function renderRiskResult(result) {
     if (form) form.style.display = 'none';
 }
 
+function autoAssessSuspiciousBooking() {
+    // Hide waiting state
+    const waiting = document.getElementById('panelWaiting');
+    if (waiting) waiting.style.display = 'none';
+
+    // Show booking details tags
+    const details = document.getElementById('autoBookingDetails');
+    if (details) details.style.display = 'block';
+
+    // Show "Try Your Own" button
+    const tryBtn = document.getElementById('newBookingBtn');
+    if (tryBtn) tryBtn.style.display = '';
+
+    // Set suspicious values in the hidden form
+    const leadTime = document.getElementById('leadTime');
+    const payment = document.getElementById('paymentMethod');
+    const duration = document.getElementById('stayDuration');
+    const source = document.getElementById('bookingSource');
+
+    if (leadTime) leadTime.value = '2';
+    if (payment) payment.value = 'cash';
+    if (duration) duration.value = '0.5';
+    if (source) source.value = 'thirdparty';
+
+    // Score and render
+    const booking = {
+        leadTime: 2,
+        paymentMethod: 'cash',
+        stayDuration: 0.5,
+        bookingSource: 'thirdparty'
+    };
+
+    const result = riskScorer.score(booking);
+    renderRiskResult(result);
+
+    // Keep form hidden (renderRiskResult hides it), show result
+    const form = document.getElementById('bookingForm');
+    if (form) form.style.display = 'none';
+}
+
 function resetRiskPanel() {
     const container = document.getElementById('riskResult');
     const form = document.getElementById('bookingForm');
+    const details = document.getElementById('autoBookingDetails');
+    const waiting = document.getElementById('panelWaiting');
 
     if (container) container.classList.remove('visible');
+    if (details) details.style.display = 'none';
+    if (waiting) waiting.style.display = 'none';
     if (form) form.style.display = 'flex';
 }
 
@@ -472,6 +516,9 @@ async function runTrainingRound() {
 
         const quickBtn = document.getElementById('quickDemoBtn');
         if (quickBtn) quickBtn.style.display = 'none';
+
+        // Auto-assess a suspicious booking after training completes
+        setTimeout(autoAssessSuspiciousBooking, 800);
     }
 }
 
@@ -517,7 +564,19 @@ function resetSimulation() {
     initializePropertyGrid();
     updateCoordinatorUI();
     updateNetworkStatus('Ready');
-    resetRiskPanel();
+
+    // Reset panel 3 back to waiting state
+    const riskResult = document.getElementById('riskResult');
+    const bookingForm = document.getElementById('bookingForm');
+    const autoDetails = document.getElementById('autoBookingDetails');
+    const panelWaiting = document.getElementById('panelWaiting');
+    const tryBtn = document.getElementById('newBookingBtn');
+
+    if (riskResult) riskResult.classList.remove('visible');
+    if (bookingForm) bookingForm.style.display = 'none';
+    if (autoDetails) autoDetails.style.display = 'none';
+    if (panelWaiting) panelWaiting.style.display = '';
+    if (tryBtn) tryBtn.style.display = 'none';
 
     document.getElementById('startTrainingBtn').innerHTML = `
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -98,6 +98,33 @@
             justify-content: center;
         }
 
+        /* Fix ring label overflow */
+        .demo-page .model-ring {
+            width: 180px;
+            height: 180px;
+        }
+        .demo-page .ring-center {
+            width: 148px;
+            height: 148px;
+        }
+        .demo-page .ring-label {
+            font-size: 0.65rem;
+            text-align: center;
+            line-height: 1.3;
+            max-width: 110px;
+        }
+
+        /* Booking tags for auto-assessment */
+        .booking-tag {
+            background: rgba(248, 113, 113, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            padding: 0.3rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
         /* Red flags stat color coding */
         .stat-red-flags .coord-value {
             color: #f87171;
@@ -393,13 +420,37 @@
 
                 <!-- Panel 3: Risk Assessment -->
                 <div class="demo-panel risk-panel">
-                    <div class="panel-step-label"><span class="step-num">3</span> Test a Booking</div>
+                    <div class="panel-step-label"><span class="step-num">3</span> What It Catches</div>
                     <div class="panel-header">
-                        <h3>Try It: Check a Booking</h3>
-                        <button class="btn btn-small" id="newBookingBtn">New Booking</button>
+                        <h3>Suspicious Booking Flagged</h3>
+                        <button class="btn btn-small" id="newBookingBtn" style="display:none;">Try Your Own</button>
                     </div>
-                    <p style="color: var(--neutral-400); font-size: 0.85rem; margin: 0 0 1rem; line-height: 1.5;">Change these options and see how the risk score changes. Try picking suspicious combinations.</p>
-                    <div class="booking-form" id="bookingForm">
+
+                    <!-- Waiting state: shown before simulation runs -->
+                    <div class="panel-waiting" id="panelWaiting">
+                        <div style="text-align: center; padding: 3rem 1rem; color: var(--neutral-400);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 48px; height: 48px; opacity: 0.4; margin-bottom: 1rem;">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                            <p style="font-size: 1rem; margin: 0 0 0.5rem; color: var(--neutral-300);">Waiting for the network to train...</p>
+                            <p style="font-size: 0.85rem; margin: 0; opacity: 0.7;">Once hotels finish learning, a suspicious booking will be automatically checked.</p>
+                        </div>
+                    </div>
+
+                    <!-- Booking details shown after auto-assessment -->
+                    <div class="auto-booking-details" id="autoBookingDetails" style="display:none;">
+                        <p style="color: var(--neutral-400); font-size: 0.8rem; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Incoming booking:</p>
+                        <div class="auto-booking-tags" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;">
+                            <span class="booking-tag">Last minute (2 hrs notice)</span>
+                            <span class="booking-tag">Paying with cash</span>
+                            <span class="booking-tag">Stay: just a few hours</span>
+                            <span class="booking-tag">Someone else booked</span>
+                        </div>
+                    </div>
+
+                    <!-- Hidden form for "Try Your Own" mode -->
+                    <div class="booking-form" id="bookingForm" style="display:none;">
                         <div class="form-row">
                             <label>How far in advance was it booked?</label>
                             <select id="leadTime">
@@ -437,6 +488,7 @@
                         </div>
                         <button class="btn btn-primary btn-full" id="assessBtn">Check This Booking</button>
                     </div>
+
                     <div class="risk-result" id="riskResult">
                         <div class="risk-score-display">
                             <div class="risk-gauge" id="riskGauge">
