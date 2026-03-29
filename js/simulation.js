@@ -413,7 +413,7 @@ async function runTrainingRound() {
     if (!state.isRunning || state.isPaused) return;
 
     state.currentRound++;
-    updateNetworkStatus(`Learning round ${state.currentRound} of ${CONFIG.trainingRounds}`);
+    updateNetworkStatus(`Step ${state.currentRound} of ${CONFIG.trainingRounds} — hotels sharing lessons`);
 
     // Select random subset of properties to train this round
     const numTraining = Math.floor(Math.random() * 4) + 5;
@@ -448,7 +448,7 @@ async function runTrainingRound() {
         await property.receiveModel();
     }
 
-    updateNetworkStatus(`Round ${state.currentRound} done — hotels updated`);
+    updateNetworkStatus(`Step ${state.currentRound} done — network improving`);
 
     // Continue to next round
     if (state.currentRound < CONFIG.trainingRounds && state.isRunning) {
@@ -462,7 +462,7 @@ async function runTrainingRound() {
             delete CONFIG._origRounds;
         }
 
-        updateNetworkStatus('Done — Network Trained ✓');
+        updateNetworkStatus('Done — Network Ready ✓');
         document.getElementById('startTrainingBtn').innerHTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20 6L9 17l-5-5"/>

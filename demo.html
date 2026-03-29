@@ -42,9 +42,14 @@
         /* ── Three-column grid with flow arrows ── */
         .demo-page .demo-container {
             display: grid !important;
-            grid-template-columns: 1fr auto 1fr auto 1fr !important;
-            gap: 0.75rem;
+            grid-template-columns: 1fr 32px 1fr 32px 1fr !important;
+            gap: 0;
             align-items: start;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .demo-page .demo-panel {
+            min-width: 0;
         }
         .demo-page .demo-panel.risk-panel {
             grid-column: auto;
@@ -60,8 +65,8 @@
             margin-top: 2rem;
         }
         .flow-arrow svg {
-            width: 36px;
-            height: 36px;
+            width: 28px;
+            height: 28px;
             stroke: var(--primary-400, #5fa899);
             fill: none;
             stroke-width: 2.5;
@@ -346,21 +351,21 @@
                             <div class="ring-progress" id="ringProgress"></div>
                             <div class="ring-center">
                                 <span class="ring-value" id="modelAccuracy">0%</span>
-                                <span class="ring-label">Detection Accuracy</span>
+                                <span class="ring-label">Suspicious Bookings Caught</span>
                             </div>
                         </div>
                         <div class="coordinator-stats">
                             <div class="coord-stat">
                                 <span class="coord-value" id="roundNumber">0</span>
-                                <span class="coord-label">Learning Rounds</span>
+                                <span class="coord-label">Training Steps</span>
                             </div>
                             <div class="coord-stat">
                                 <span class="coord-value" id="gradientCount">0</span>
-                                <span class="coord-label">Lessons Shared</span>
+                                <span class="coord-label">Hotels Contributed</span>
                             </div>
                             <div class="coord-stat">
                                 <span class="coord-value" id="patternsLearned">0</span>
-                                <span class="coord-label">Patterns Found</span>
+                                <span class="coord-label">Red Flags Learned</span>
                             </div>
                         </div>
                     </div>
