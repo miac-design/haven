@@ -208,7 +208,7 @@ class RiskScorer {
         riskScore += leadTimeScore * 0.3;
         if (leadTimeScore > 0.3) {
             factors.push({
-                text: 'Short booking lead time',
+                text: 'Booked very last-minute',
                 impact: leadTimeScore > 0.5 ? 'high' : 'medium'
             });
         }
@@ -218,7 +218,7 @@ class RiskScorer {
         riskScore += paymentScore * 0.3;
         if (paymentScore > 0.3) {
             factors.push({
-                text: 'Non-traditional payment method',
+                text: 'Paying with prepaid card or cash',
                 impact: paymentScore > 0.5 ? 'high' : 'medium'
             });
         }
@@ -228,7 +228,7 @@ class RiskScorer {
         riskScore += durationScore * 0.2;
         if (durationScore > 0.3) {
             factors.push({
-                text: 'Very short stay duration',
+                text: 'Unusually short stay (just hours)',
                 impact: durationScore > 0.5 ? 'high' : 'medium'
             });
         }
@@ -238,7 +238,7 @@ class RiskScorer {
         riskScore += sourceScore * 0.2;
         if (sourceScore > 0.3) {
             factors.push({
-                text: 'Third-party or walk-in booking',
+                text: 'Someone else booked the room for them',
                 impact: sourceScore > 0.5 ? 'high' : 'medium'
             });
         }
@@ -246,7 +246,7 @@ class RiskScorer {
         // Add network bonus if trained
         if (state.currentRound > 0) {
             factors.unshift({
-                text: `Pattern matched across ${Math.min(state.patternsLearned, 47)} network incidents`,
+                text: `Similar pattern seen at ${Math.min(state.patternsLearned, 47)} other hotels in the network`,
                 impact: 'network'
             });
         }
@@ -255,16 +255,16 @@ class RiskScorer {
         let level, recommendation;
         if (riskScore < 0.3) {
             level = 'low';
-            recommendation = 'Standard check-in procedure. No additional action required.';
+            recommendation = 'This looks like a normal booking. No special action needed.';
         } else if (riskScore < 0.5) {
             level = 'moderate';
-            recommendation = 'Enhanced staff awareness recommended. Monitor guest activity.';
+            recommendation = 'Some signals worth noting. Staff should be aware during check-in.';
         } else if (riskScore < 0.7) {
             level = 'elevated';
-            recommendation = 'Manager notification advised. Discreet monitoring recommended.';
+            recommendation = 'Multiple warning signs detected. A manager should be quietly notified.';
         } else {
             level = 'high';
-            recommendation = 'Senior review required. Consider hotline contact if additional signals observed.';
+            recommendation = 'This booking matches known trafficking patterns. Senior staff should review and consider contacting the National Human Trafficking Hotline.';
         }
 
         return {
@@ -413,7 +413,7 @@ async function runTrainingRound() {
     if (!state.isRunning || state.isPaused) return;
 
     state.currentRound++;
-    updateNetworkStatus(`Training Round ${state.currentRound}/${CONFIG.trainingRounds}`);
+    updateNetworkStatus(`Learning round ${state.currentRound} of ${CONFIG.trainingRounds}`);
 
     // Select random subset of properties to train this round
     const numTraining = Math.floor(Math.random() * 4) + 5;
@@ -448,7 +448,7 @@ async function runTrainingRound() {
         await property.receiveModel();
     }
 
-    updateNetworkStatus(`Round ${state.currentRound} Complete`);
+    updateNetworkStatus(`Round ${state.currentRound} done — hotels updated`);
 
     // Continue to next round
     if (state.currentRound < CONFIG.trainingRounds && state.isRunning) {
@@ -462,12 +462,12 @@ async function runTrainingRound() {
             delete CONFIG._origRounds;
         }
 
-        updateNetworkStatus('Training Complete ✓');
+        updateNetworkStatus('Done — Network Trained ✓');
         document.getElementById('startTrainingBtn').innerHTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20 6L9 17l-5-5"/>
             </svg>
-            Training Complete
+            Simulation Complete
         `;
 
         const quickBtn = document.getElementById('quickDemoBtn');
@@ -491,7 +491,7 @@ function startTraining(quickMode = false) {
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 6v6l4 2"/>
         </svg>
-        Training in Progress...
+        Hotels are learning...
     `;
 
     const quickBtn = document.getElementById('quickDemoBtn');
@@ -523,7 +523,7 @@ function resetSimulation() {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="5 3 19 12 5 21 5 3"/>
         </svg>
-        Start Federated Training
+        Start the Simulation
     `;
 
     const quickBtn = document.getElementById('quickDemoBtn');
@@ -542,7 +542,7 @@ async function assessBooking() {
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 6v6l4 2"/>
         </svg>
-        Analyzing Pattern...
+        Checking booking...
     `;
 
     // Simulate network/processing delay for UX

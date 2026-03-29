@@ -189,30 +189,30 @@
     <!-- Hero / Intro -->
     <section class="demo-hero">
         <div class="container">
-            <h1>Interactive Demo</h1>
-            <p>Watch how HAVEN's federated learning model trains across a network of hotel properties — sharing intelligence without sharing guest data.</p>
+            <h1>See How Hotels Can Fight Trafficking Together</h1>
+            <p>This simulation shows how HAVEN helps hotels learn from each other's experiences to spot suspicious booking patterns — <strong>without ever sharing guest information</strong>. Think of it like neighborhood watch for hotels, powered by AI.</p>
         </div>
     </section>
 
     <!-- How This Demo Works -->
     <section class="demo-steps-section">
         <div class="container">
-            <h2>How This Demo Works</h2>
+            <h2>What You're About to See</h2>
             <div class="demo-steps">
                 <div class="demo-step">
                     <div class="step-number">1</div>
-                    <div class="step-title">Start Training</div>
-                    <div class="step-desc">Each hotel trains locally on its own booking data</div>
+                    <div class="step-title">Hotels Learn Locally</div>
+                    <div class="step-desc">Each hotel analyzes its own booking patterns on-site. No guest data ever leaves the property.</div>
                 </div>
                 <div class="demo-step">
                     <div class="step-number">2</div>
-                    <div class="step-title">Watch the Network</div>
-                    <div class="step-desc">Hotels share only mathematical gradients (not guest data) with the coordinator</div>
+                    <div class="step-title">Lessons Are Shared — Not Data</div>
+                    <div class="step-desc">Hotels share only what they've <em>learned</em> (patterns like "short-notice cash bookings"), never who their guests are.</div>
                 </div>
                 <div class="demo-step">
                     <div class="step-number">3</div>
-                    <div class="step-title">See the Results</div>
-                    <div class="step-desc">The shared model improves pattern detection across all properties</div>
+                    <div class="step-title">The Whole Network Gets Smarter</div>
+                    <div class="step-desc">Every hotel benefits from the collective intelligence. A pattern seen at one property helps protect guests at all properties.</div>
                 </div>
             </div>
         </div>
@@ -227,7 +227,7 @@
                     <!-- Network Visualization Panel -->
                     <div class="demo-panel network-panel">
                         <div class="panel-header">
-                            <h3>Property Network</h3>
+                            <h3>Hotel Network</h3>
                             <div class="panel-status">
                                 <span class="status-dot active"></span>
                                 <span id="networkStatus">Ready</span>
@@ -239,15 +239,15 @@
                         <div class="network-legend">
                             <div class="legend-item">
                                 <span class="legend-dot training"></span>
-                                <span>Training Locally</span>
+                                <span>Analyzing Bookings</span>
                             </div>
                             <div class="legend-item">
                                 <span class="legend-dot sending"></span>
-                                <span>Sharing Updates</span>
+                                <span>Sharing Lessons</span>
                             </div>
                             <div class="legend-item">
                                 <span class="legend-dot receiving"></span>
-                                <span>Receiving Model</span>
+                                <span>Getting Smarter</span>
                             </div>
                         </div>
                     </div>
@@ -255,29 +255,29 @@
                     <!-- Central Coordinator Panel -->
                     <div class="demo-panel coordinator-panel">
                         <div class="panel-header">
-                            <h3>Federated Coordinator</h3>
-                            <div class="panel-badge">Privacy-Preserving</div>
+                            <h3>Network Intelligence</h3>
+                            <div class="panel-badge">No Guest Data Shared</div>
                         </div>
                         <div class="coordinator-viz">
                             <div class="model-ring" id="modelRing">
                                 <div class="ring-progress" id="ringProgress"></div>
                                 <div class="ring-center">
                                     <span class="ring-value" id="modelAccuracy">0%</span>
-                                    <span class="ring-label">Model Accuracy</span>
+                                    <span class="ring-label">Detection Accuracy</span>
                                 </div>
                             </div>
                             <div class="coordinator-stats">
                                 <div class="coord-stat">
                                     <span class="coord-value" id="roundNumber">0</span>
-                                    <span class="coord-label">Training Rounds</span>
+                                    <span class="coord-label">Learning Rounds</span>
                                 </div>
                                 <div class="coord-stat">
                                     <span class="coord-value" id="gradientCount">0</span>
-                                    <span class="coord-label">Insights Shared</span>
+                                    <span class="coord-label">Lessons Shared</span>
                                 </div>
                                 <div class="coord-stat">
                                     <span class="coord-value" id="patternsLearned">0</span>
-                                    <span class="coord-label">Patterns Identified</span>
+                                    <span class="coord-label">Patterns Found</span>
                                 </div>
                             </div>
                         </div>
@@ -286,7 +286,7 @@
                                 <rect x="3" y="11" width="18" height="11" rx="2" />
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                             </svg>
-                            <span>Zero guest data accessed</span>
+                            <span>Zero guest data leaves any hotel</span>
                         </div>
                     </div>
                 </div>
@@ -294,46 +294,47 @@
                 <!-- Right Column: Risk Assessment Panel -->
                 <div class="demo-panel risk-panel">
                     <div class="panel-header">
-                        <h3>Real-Time Risk Assessment</h3>
-                        <button class="btn btn-small" id="newBookingBtn">Simulate New Booking</button>
+                        <h3>Try It: Check a Booking</h3>
+                        <button class="btn btn-small" id="newBookingBtn">New Booking</button>
                     </div>
+                    <p style="color: var(--neutral-400); font-size: 0.85rem; margin: 0 0 1rem; line-height: 1.5;">Change these options to see how different booking patterns affect the risk score. Try selecting suspicious combinations.</p>
                     <div class="booking-form" id="bookingForm">
                         <div class="form-row">
-                            <label>Lead Time</label>
+                            <label>How far in advance was it booked?</label>
                             <select id="leadTime">
-                                <option value="168">1 week advance</option>
-                                <option value="48">2 days advance</option>
+                                <option value="168">1 week ahead</option>
+                                <option value="48">2 days ahead</option>
                                 <option value="6">Same day</option>
-                                <option value="2">2 hours</option>
+                                <option value="2">Last minute (2 hours)</option>
                             </select>
                         </div>
                         <div class="form-row">
-                            <label>Payment Method</label>
+                            <label>How are they paying?</label>
                             <select id="paymentMethod">
                                 <option value="credit">Credit Card</option>
                                 <option value="debit">Debit Card</option>
-                                <option value="prepaid">Prepaid Card</option>
+                                <option value="prepaid">Prepaid / Gift Card</option>
                                 <option value="cash">Cash</option>
                             </select>
                         </div>
                         <div class="form-row">
-                            <label>Stay Duration</label>
+                            <label>How long is the stay?</label>
                             <select id="stayDuration">
                                 <option value="3">3 nights</option>
                                 <option value="1">1 night</option>
-                                <option value="0.5">Few hours</option>
+                                <option value="0.5">Just a few hours</option>
                             </select>
                         </div>
                         <div class="form-row">
-                            <label>Booking Source</label>
+                            <label>How did they book?</label>
                             <select id="bookingSource">
-                                <option value="direct">Direct (Hotel Website)</option>
-                                <option value="ota">OTA (Booking.com, etc.)</option>
-                                <option value="walkin">Walk-in</option>
-                                <option value="thirdparty">Third-Party Booker</option>
+                                <option value="direct">Hotel website</option>
+                                <option value="ota">Travel site (Booking.com, etc.)</option>
+                                <option value="walkin">Walked in</option>
+                                <option value="thirdparty">Someone else booked for them</option>
                             </select>
                         </div>
-                        <button class="btn btn-primary btn-full" id="assessBtn">Assess Risk</button>
+                        <button class="btn btn-primary btn-full" id="assessBtn">Check This Booking</button>
                     </div>
                     <div class="risk-result" id="riskResult">
                         <div class="risk-score-display">
@@ -360,15 +361,15 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
-                    Start Federated Training
+                    Start the Simulation
                 </button>
                 <button class="btn btn-accent btn-large" id="quickDemoBtn" title="Runs a faster 3-round demo — ideal for live presentations">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                     </svg>
-                    Quick Demo <small style="opacity: 0.8; font-weight: 400;">(3-round presentation mode)</small>
+                    Quick Version <small style="opacity: 0.8; font-weight: 400;">(30 seconds)</small>
                 </button>
-                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                <button class="btn btn-secondary" id="resetBtn">Start Over</button>
             </div>
         </div>
     </section>
