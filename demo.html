@@ -19,6 +19,7 @@
 
     <!-- Demo page specific overrides -->
     <style>
+        /* ── Controls ── */
         .demo-page .demo-controls .btn {
             font-size: 0.95rem;
             padding: 0.75rem 1.5rem;
@@ -31,20 +32,6 @@
             padding: 0.75rem 1.5rem;
             font-size: 0.95rem;
         }
-        .demo-page .demo-container {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 1.5rem;
-            align-items: start;
-        }
-        .demo-page .demo-left-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .demo-page .demo-panel.risk-panel {
-            grid-column: auto;
-        }
         .demo-page .btn-full {
             padding: 0.75rem 1.5rem;
         }
@@ -52,9 +39,63 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Demo hero intro */
+        /* ── Three-column grid with flow arrows ── */
+        .demo-page .demo-container {
+            display: grid !important;
+            grid-template-columns: 1fr auto 1fr auto 1fr !important;
+            gap: 0.75rem;
+            align-items: start;
+        }
+        .demo-page .demo-panel.risk-panel {
+            grid-column: auto;
+        }
+
+        /* Flow arrows between panels */
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            padding: 0;
+            margin-top: 2rem;
+        }
+        .flow-arrow svg {
+            width: 36px;
+            height: 36px;
+            stroke: var(--primary-400, #5fa899);
+            fill: none;
+            stroke-width: 2.5;
+            opacity: 0.8;
+        }
+
+        /* Step labels on each panel */
+        .panel-step-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary-400, #5fa899);
+            margin-bottom: 0.75rem;
+        }
+        .panel-step-label .step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5fa899, #367366);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── Demo hero intro ── */
         .demo-hero {
-            padding: 6rem 0 2rem;
+            padding: 6rem 0 1.5rem;
             text-align: center;
         }
         .demo-hero h1 {
@@ -72,9 +113,9 @@
             line-height: 1.7;
         }
 
-        /* How it works steps */
+        /* ── How it works steps ── */
         .demo-steps-section {
-            padding: 2rem 0 3rem;
+            padding: 1.5rem 0 2rem;
         }
         .demo-steps-section h2 {
             font-family: 'Playfair Display', serif;
@@ -121,12 +162,25 @@
             line-height: 1.6;
         }
 
-        /* Simulation area */
+        /* ── Demo controls above simulation ── */
+        .demo-controls-top {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .demo-controls-top .demo-controls {
+            display: inline-flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 0;
+        }
+
+        /* ── Simulation area ── */
         .demo-simulation-section {
             padding: 2rem 0 3rem;
         }
 
-        /* Footer */
+        /* ── Footer ── */
         .demo-footer {
             text-align: center;
             padding: 3rem 0;
@@ -143,10 +197,13 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* ── Responsive ── */
+        @media (max-width: 1100px) {
             .demo-page .demo-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+            }
+            .flow-arrow {
+                display: none;
             }
             .demo-steps {
                 flex-direction: column;
@@ -222,83 +279,113 @@
     <!-- Simulation Area -->
     <section class="section demo-section demo-simulation-section" id="demo">
         <div class="container">
+
+            <!-- Controls above the simulation -->
+            <div class="demo-controls-top">
+                <div class="demo-controls">
+                    <button class="btn btn-primary btn-large" id="startTrainingBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                        Start the Simulation
+                    </button>
+                    <button class="btn btn-accent btn-large" id="quickDemoBtn" title="Runs a faster 3-round demo — ideal for live presentations">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                        Quick Version <small style="opacity: 0.8; font-weight: 400;">(30 sec)</small>
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">Start Over</button>
+                </div>
+            </div>
+
             <div class="demo-container">
-                <!-- Left Column: Network + Coordinator stacked -->
-                <div class="demo-left-column">
-                    <!-- Network Visualization Panel -->
-                    <div class="demo-panel network-panel">
-                        <div class="panel-header">
-                            <h3>Hotel Network</h3>
-                            <div class="panel-status">
-                                <span class="status-dot active"></span>
-                                <span id="networkStatus">Ready</span>
-                            </div>
-                        </div>
-                        <div class="network-grid" id="networkGrid">
-                            <!-- Properties will be rendered here -->
-                        </div>
-                        <div class="network-legend">
-                            <div class="legend-item">
-                                <span class="legend-dot training"></span>
-                                <span>Analyzing Bookings</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-dot sending"></span>
-                                <span>Sharing Lessons</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-dot receiving"></span>
-                                <span>Getting Smarter</span>
-                            </div>
+                <!-- Panel 1: Hotel Network -->
+                <div class="demo-panel network-panel">
+                    <div class="panel-step-label"><span class="step-num">1</span> Hotels Learn Locally</div>
+                    <div class="panel-header">
+                        <h3>Hotel Network</h3>
+                        <div class="panel-status">
+                            <span class="status-dot active"></span>
+                            <span id="networkStatus">Ready</span>
                         </div>
                     </div>
-
-                    <!-- Central Coordinator Panel -->
-                    <div class="demo-panel coordinator-panel">
-                        <div class="panel-header">
-                            <h3>Network Intelligence</h3>
-                            <div class="panel-badge">No Guest Data Shared</div>
+                    <div class="network-grid" id="networkGrid">
+                        <!-- Properties will be rendered here -->
+                    </div>
+                    <div class="network-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot training"></span>
+                            <span>Analyzing Bookings</span>
                         </div>
-                        <div class="coordinator-viz">
-                            <div class="model-ring" id="modelRing">
-                                <div class="ring-progress" id="ringProgress"></div>
-                                <div class="ring-center">
-                                    <span class="ring-value" id="modelAccuracy">0%</span>
-                                    <span class="ring-label">Detection Accuracy</span>
-                                </div>
-                            </div>
-                            <div class="coordinator-stats">
-                                <div class="coord-stat">
-                                    <span class="coord-value" id="roundNumber">0</span>
-                                    <span class="coord-label">Learning Rounds</span>
-                                </div>
-                                <div class="coord-stat">
-                                    <span class="coord-value" id="gradientCount">0</span>
-                                    <span class="coord-label">Lessons Shared</span>
-                                </div>
-                                <div class="coord-stat">
-                                    <span class="coord-value" id="patternsLearned">0</span>
-                                    <span class="coord-label">Patterns Found</span>
-                                </div>
-                            </div>
+                        <div class="legend-item">
+                            <span class="legend-dot sending"></span>
+                            <span>Sharing Lessons</span>
                         </div>
-                        <div class="privacy-indicator">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="11" width="18" height="11" rx="2" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-                            <span>Zero guest data leaves any hotel</span>
+                        <div class="legend-item">
+                            <span class="legend-dot receiving"></span>
+                            <span>Getting Smarter</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Risk Assessment Panel -->
+                <!-- Arrow 1→2 -->
+                <div class="flow-arrow">
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </div>
+
+                <!-- Panel 2: Network Intelligence -->
+                <div class="demo-panel coordinator-panel">
+                    <div class="panel-step-label"><span class="step-num">2</span> Lessons Are Combined</div>
+                    <div class="panel-header">
+                        <h3>Network Intelligence</h3>
+                        <div class="panel-badge">No Guest Data Shared</div>
+                    </div>
+                    <div class="coordinator-viz">
+                        <div class="model-ring" id="modelRing">
+                            <div class="ring-progress" id="ringProgress"></div>
+                            <div class="ring-center">
+                                <span class="ring-value" id="modelAccuracy">0%</span>
+                                <span class="ring-label">Detection Accuracy</span>
+                            </div>
+                        </div>
+                        <div class="coordinator-stats">
+                            <div class="coord-stat">
+                                <span class="coord-value" id="roundNumber">0</span>
+                                <span class="coord-label">Learning Rounds</span>
+                            </div>
+                            <div class="coord-stat">
+                                <span class="coord-value" id="gradientCount">0</span>
+                                <span class="coord-label">Lessons Shared</span>
+                            </div>
+                            <div class="coord-stat">
+                                <span class="coord-value" id="patternsLearned">0</span>
+                                <span class="coord-label">Patterns Found</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="privacy-indicator">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <span>Zero guest data leaves any hotel</span>
+                    </div>
+                </div>
+
+                <!-- Arrow 2→3 -->
+                <div class="flow-arrow">
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </div>
+
+                <!-- Panel 3: Risk Assessment -->
                 <div class="demo-panel risk-panel">
+                    <div class="panel-step-label"><span class="step-num">3</span> Test a Booking</div>
                     <div class="panel-header">
                         <h3>Try It: Check a Booking</h3>
                         <button class="btn btn-small" id="newBookingBtn">New Booking</button>
                     </div>
-                    <p style="color: var(--neutral-400); font-size: 0.85rem; margin: 0 0 1rem; line-height: 1.5;">Change these options to see how different booking patterns affect the risk score. Try selecting suspicious combinations.</p>
+                    <p style="color: var(--neutral-400); font-size: 0.85rem; margin: 0 0 1rem; line-height: 1.5;">Change these options and see how the risk score changes. Try picking suspicious combinations.</p>
                     <div class="booking-form" id="bookingForm">
                         <div class="form-row">
                             <label>How far in advance was it booked?</label>
@@ -354,23 +441,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Demo Controls -->
-            <div class="demo-controls">
-                <button class="btn btn-primary btn-large" id="startTrainingBtn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                    Start the Simulation
-                </button>
-                <button class="btn btn-accent btn-large" id="quickDemoBtn" title="Runs a faster 3-round demo — ideal for live presentations">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                    </svg>
-                    Quick Version <small style="opacity: 0.8; font-weight: 400;">(30 seconds)</small>
-                </button>
-                <button class="btn btn-secondary" id="resetBtn">Start Over</button>
             </div>
         </div>
     </section>
