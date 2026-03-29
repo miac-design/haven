@@ -64,6 +64,7 @@ class SimulationState {
     reset() {
         this.isRunning = false;
         this.isPaused = false;
+        this.quickMode = false;
         this.currentRound = 0;
         this.modelAccuracy = CONFIG.initialAccuracy;
         this.gradientsReceived = 0;
@@ -109,7 +110,8 @@ class PropertyAgent {
 
     async trainLocal() {
         this.setStatus('training');
-        await sleep(500 + Math.random() * 500);
+        const fast = state.quickMode ? 0.3 : 1;
+        await sleep((500 + Math.random() * 500) * fast);
         return {
             propertyId: this.id,
             gradientVector: this.generateGradient(),
@@ -124,12 +126,14 @@ class PropertyAgent {
 
     async sendGradient() {
         this.setStatus('sending');
-        await sleep(300 + Math.random() * 200);
+        const fast = state.quickMode ? 0.3 : 1;
+        await sleep((300 + Math.random() * 200) * fast);
     }
 
     async receiveModel() {
         this.setStatus('receiving');
-        await sleep(300 + Math.random() * 200);
+        const fast = state.quickMode ? 0.3 : 1;
+        await sleep((300 + Math.random() * 200) * fast);
         this.setStatus('idle');
     }
 }
@@ -448,9 +452,16 @@ async function runTrainingRound() {
 
     // Continue to next round
     if (state.currentRound < CONFIG.trainingRounds && state.isRunning) {
-        setTimeout(runTrainingRound, 500);
+        setTimeout(runTrainingRound, state.quickMode ? 150 : 500);
     } else if (state.currentRound >= CONFIG.trainingRounds) {
         state.isRunning = false;
+
+        // Restore original rounds config if quick mode
+        if (state.quickMode && CONFIG._origRounds) {
+            CONFIG.trainingRounds = CONFIG._origRounds;
+            delete CONFIG._origRounds;
+        }
+
         updateNetworkStatus('Training Complete ✓');
         document.getElementById('startTrainingBtn').innerHTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -458,13 +469,23 @@ async function runTrainingRound() {
             </svg>
             Training Complete
         `;
+
+        const quickBtn = document.getElementById('quickDemoBtn');
+        if (quickBtn) quickBtn.style.display = 'none';
     }
 }
 
-function startTraining() {
+function startTraining(quickMode = false) {
     if (state.isRunning) return;
 
     state.isRunning = true;
+    state.quickMode = quickMode;
+
+    if (quickMode) {
+        CONFIG._origRounds = CONFIG.trainingRounds;
+        CONFIG.trainingRounds = 3;
+    }
+
     document.getElementById('startTrainingBtn').innerHTML = `
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning">
             <circle cx="12" cy="12" r="10"/>
@@ -473,10 +494,23 @@ function startTraining() {
         Training in Progress...
     `;
 
+    const quickBtn = document.getElementById('quickDemoBtn');
+    if (quickBtn) quickBtn.style.display = 'none';
+
     runTrainingRound();
 }
 
+function startQuickDemo() {
+    startTraining(true);
+}
+
 function resetSimulation() {
+    // Restore config if quick mode was active
+    if (CONFIG._origRounds) {
+        CONFIG.trainingRounds = CONFIG._origRounds;
+        delete CONFIG._origRounds;
+    }
+
     state.reset();
     coordinator.reset();
 
@@ -491,6 +525,9 @@ function resetSimulation() {
         </svg>
         Start Federated Training
     `;
+
+    const quickBtn = document.getElementById('quickDemoBtn');
+    if (quickBtn) quickBtn.style.display = '';
 }
 
 async function assessBooking() {
@@ -551,8 +588,14 @@ function initSimulation() {
     const assessBtn = document.getElementById('assessBtn');
     const newBookingBtn = document.getElementById('newBookingBtn');
 
+    const quickDemoBtn = document.getElementById('quickDemoBtn');
+
     if (startBtn) {
-        startBtn.addEventListener('click', startTraining);
+        startBtn.addEventListener('click', function() { startTraining(false); });
+    }
+
+    if (quickDemoBtn) {
+        quickDemoBtn.addEventListener('click', startQuickDemo);
     }
 
     if (resetBtn) {
@@ -572,6 +615,7 @@ function initSimulation() {
 window.HAVENSimulation = {
     init: initSimulation,
     start: startTraining,
+    quickDemo: startQuickDemo,
     reset: resetSimulation,
     assess: assessBooking,
     state,

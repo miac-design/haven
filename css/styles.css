@@ -2358,3 +2358,207 @@ h4 {
 .music-toggle-inline.playing .toggle-label {
     color: var(--primary-700);
 }
+
+/* ============================================
+   ITU AI for Good Badge
+   ============================================ */
+.itu-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(0, 120, 210, 0.12), rgba(0, 120, 210, 0.05));
+    border: 1px solid rgba(0, 120, 210, 0.25);
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+    color: #0078d2;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    animation: badgePulse 3s ease-in-out infinite;
+}
+
+.itu-badge svg {
+    flex-shrink: 0;
+    stroke: #0078d2;
+}
+
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 120, 210, 0.15); }
+    50% { box-shadow: 0 0 0 8px rgba(0, 120, 210, 0); }
+}
+
+/* ============================================
+   Simulation Results Section
+   ============================================ */
+.results-section {
+    background: linear-gradient(180deg, var(--primary-50), var(--secondary-50));
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.result-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--neutral-200);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.result-card.highlight {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+    color: white;
+    border-color: var(--primary-600);
+}
+
+.result-card.highlight .result-label,
+.result-card.highlight .result-detail {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.result-value {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-700);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+
+.result-card.highlight .result-value {
+    color: white;
+}
+
+.result-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--neutral-800);
+    margin-bottom: 0.5rem;
+}
+
+.result-detail {
+    font-size: 0.85rem;
+    color: var(--neutral-500);
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   SDG Alignment Section
+   ============================================ */
+.sdg-section {
+    background: var(--secondary-50);
+}
+
+.sdg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.sdg-card {
+    border-radius: 1rem;
+    padding: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.sdg-card:hover {
+    transform: translateY(-4px);
+}
+
+.sdg-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 0 80px;
+}
+
+.sdg-5 {
+    background: linear-gradient(135deg, #ef402b, #d4351c);
+}
+
+.sdg-8 {
+    background: linear-gradient(135deg, #a31c44, #8a1839);
+}
+
+.sdg-16 {
+    background: linear-gradient(135deg, #0a5688, #084a75);
+}
+
+.sdg-number {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+}
+
+.sdg-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 0.75rem;
+}
+
+.sdg-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .sdg-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Quick Demo Button
+   ============================================ */
+.btn-accent {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: white;
+    border: none;
+}
+
+.btn-accent:hover {
+    background: linear-gradient(135deg, #d35400, #c0392b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(211, 84, 0, 0.3);
+}
+
+.btn-accent svg {
+    stroke: white;
+}
