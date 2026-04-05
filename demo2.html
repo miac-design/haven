@@ -164,17 +164,7 @@
             margin-top: 0.25rem;
             opacity: 0;
         }
-        .alert-insight {
-            margin-top: 1.5rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.88rem;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.6;
-            opacity: 0;
-        }
         .alert-actions {
-            margin-top: 1.5rem;
             display: flex;
             gap: 1rem;
         }
@@ -182,8 +172,8 @@
         /* ── Phase 2: The Network ── */
         .network-viz {
             position: relative;
-            width: 520px;
-            height: 420px;
+            width: 620px;
+            height: 460px;
             margin: 0 auto 1rem;
         }
         .network-hotel-node {
@@ -222,10 +212,10 @@
             background: rgba(26, 46, 42, 0.92);
             border: 1px solid rgba(95, 168, 153, 0.25);
             border-radius: 6px;
-            padding: 4px 7px;
+            padding: 5px 8px;
             display: flex;
             flex-direction: column;
-            gap: 1px;
+            gap: 2px;
             opacity: 0;
             transform: scale(0.9);
             transition: opacity 0.4s ease, transform 0.4s ease;
@@ -244,7 +234,6 @@
         }
         .pattern-card.card-left {
             transform-origin: right center;
-            text-align: right;
         }
         .card-name {
             font-size: 10px;
@@ -256,6 +245,16 @@
             font-size: 10px;
             color: rgba(255,255,255,0.65);
             line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .card-pattern .warn-icon {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+            stroke: #D97706;
+            fill: none;
         }
         .network-center {
             position: absolute;
@@ -299,33 +298,26 @@
             z-index: 1;
         }
 
-        /* Live feed */
-        .live-feed-section {
-            max-width: 600px;
-            margin: 0 auto 1.5rem;
+        /* Inline icons */
+        .icon-inline {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            stroke-width: 2;
+            fill: none;
+            vertical-align: middle;
         }
-        .live-feed-section h3 {
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--neutral-400, #888);
-            margin-bottom: 0.75rem;
+        .alert-tag .icon-inline {
+            stroke: #f87171;
+            margin-right: 2px;
         }
-        .feed-item {
-            display: flex;
-            flex-direction: column;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
+        .control-group label .icon-inline {
+            stroke: #5fa899;
+            margin-right: 3px;
         }
-        .feed-pattern {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-primary, #1a2e2a);
-        }
-        .feed-source {
-            font-size: 0.78rem;
-            color: var(--neutral-400, #888);
-            margin-top: 0.15rem;
+        .d2-factor .icon-inline {
+            width: 14px;
+            height: 14px;
         }
 
         /* Privacy banner */
@@ -569,19 +561,19 @@
                 <h2>A booking just came in at Harbor Inn</h2>
                 <div class="alert-tags">
                     <div class="alert-tag">
-                        <span class="red-dot"></span>
+                        <svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                         <span>Booked 2 hours ago</span>
                     </div>
                     <div class="alert-tag">
-                        <span class="red-dot"></span>
+                        <svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         <span>Paying with cash</span>
                     </div>
                     <div class="alert-tag">
-                        <span class="red-dot"></span>
+                        <svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                         <span>Stay: just 3 hours</span>
                     </div>
                     <div class="alert-tag">
-                        <span class="red-dot"></span>
+                        <svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         <span>Someone else made the reservation</span>
                     </div>
                 </div>
@@ -590,15 +582,17 @@
                     <div class="alert-gauge-track">
                         <div class="alert-gauge-fill" id="alertGauge"></div>
                     </div>
-                    <div class="alert-gauge-value" id="alertGaugeValue">0%</div>
-                    <div class="alert-verdict" id="alertVerdict">Elevated Risk &mdash; Duty manager notified</div>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <svg class="icon-inline" viewBox="0 0 24 24" stroke="#fbbf24" style="width:20px;height:20px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span class="alert-gauge-value" id="alertGaugeValue">0%</span>
+                    </div>
+                    <div class="alert-verdict" id="alertVerdict">
+                        <svg class="icon-inline" viewBox="0 0 24 24" stroke="#fbbf24" style="width:16px;height:16px;margin-right:4px"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        Elevated Risk &mdash; Duty manager notified
+                    </div>
                 </div>
 
-                <div class="alert-insight" id="alertInsight">
-                    This alert was possible because 12 hotels learned together &mdash; without sharing a single guest record.
-                </div>
-
-                <div class="alert-actions">
+                <div class="alert-actions" style="margin-top: 1.5rem;">
                     <button class="btn btn-primary" id="seeHowBtn">See How &rarr;</button>
                 </div>
             </div>
@@ -606,6 +600,9 @@
 
         <!-- ===== Phase 2: The Network ===== -->
         <div class="phase-panel" id="phase2">
+            <p id="phase2Intro" style="text-align:center;max-width:600px;margin:0 auto 1.5rem;font-size:1rem;color:var(--text-secondary,#4a6b63);line-height:1.6;opacity:0;transition:opacity 0.6s ease;">
+                That alert was possible because 12 hotels learned together &mdash; without sharing a single guest record. Here's how:
+            </p>
             <div class="network-viz" id="networkRing">
                 <!-- SVG connector lines -->
                 <svg class="network-lines" viewBox="0 0 400 400">
@@ -613,15 +610,11 @@
                 </svg>
                 <!-- Center node -->
                 <div class="network-center" id="networkCenter">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" style="width:16px;height:16px;margin-bottom:2px"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/><line x1="5" y1="19" x2="19" y2="19"/></svg>
                     <span class="center-label">Detection</span>
                     <span class="center-value" id="networkDetectionRate">45%</span>
                 </div>
                 <!-- Hotel nodes injected by JS -->
-            </div>
-
-            <div class="live-feed-section">
-                <h3>What the network is learning</h3>
-                <div id="networkLiveFeed"></div>
             </div>
 
             <div class="privacy-banner">
@@ -643,7 +636,7 @@
                 <!-- Left: Controls -->
                 <div class="try-controls">
                     <div class="control-group">
-                        <label>When was it booked?</label>
+                        <label><svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> When was it booked?</label>
                         <select id="d2LeadTime">
                             <option value="168">1 week ago</option>
                             <option value="48">2 days ago</option>
@@ -652,7 +645,7 @@
                         </select>
                     </div>
                     <div class="control-group">
-                        <label>How are they paying?</label>
+                        <label><svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> How are they paying?</label>
                         <select id="d2Payment">
                             <option value="credit">Credit card</option>
                             <option value="debit">Debit</option>
@@ -661,7 +654,7 @@
                         </select>
                     </div>
                     <div class="control-group">
-                        <label>How long is the stay?</label>
+                        <label><svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> How long is the stay?</label>
                         <select id="d2Duration">
                             <option value="3">3 nights</option>
                             <option value="1">1 night</option>
@@ -669,7 +662,7 @@
                         </select>
                     </div>
                     <div class="control-group">
-                        <label>Who booked it?</label>
+                        <label><svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Who booked it?</label>
                         <select id="d2Source">
                             <option value="direct">Guest directly</option>
                             <option value="ota">Travel site</option>
@@ -684,7 +677,10 @@
                     <div class="d2-gauge-track">
                         <div class="gauge-fill-bar risk-low" id="d2GaugeFill" style="width: 0%"></div>
                     </div>
-                    <div class="risk-pct risk-low" id="d2RiskValue">0%</div>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <svg class="icon-inline" viewBox="0 0 24 24" stroke="currentColor" style="width:22px;height:22px;stroke:currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span class="risk-pct risk-low" id="d2RiskValue">0%</span>
+                    </div>
                     <div class="risk-level-label risk-low" id="d2RiskLabel">Low Risk</div>
                     <div class="d2-factors" id="d2RiskFactors"></div>
                     <div class="rec-text rec-low" id="d2Recommendation">Normal booking. No action needed.</div>

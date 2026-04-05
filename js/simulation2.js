@@ -33,23 +33,6 @@ const DEMO2_CONFIG = {
         'High visitor traffic pattern',
         'Weekend-only bookings'
     ],
-    // "Live feed" items shown per round in Phase 2
-    liveFeed: [
-        [
-            { text: 'Cash payment at check-in', sources: 'Grand Hotel + Metro Lodge' },
-            { text: 'Booking under 4 hours', sources: 'City Suites + Harbor Inn + Coast Hotel' },
-        ],
-        [
-            { text: 'Third-party booker with local address', sources: 'Plaza Hotel' },
-            { text: 'Prepaid card + same-day booking', sources: 'Urban Stay + Riverside Inn' },
-            { text: 'Declined housekeeping for short stay', sources: 'Central Hotel + Valley Lodge' },
-        ],
-        [
-            { text: 'Weekend-only repeat bookings', sources: 'Park Suites + Downtown Inn' },
-            { text: 'Multiple room keys with cash payment', sources: 'Coast Hotel + Grand Hotel' },
-            { text: 'Walk-in with third-party payment', sources: 'Metro Lodge + Plaza Hotel + Urban Stay' },
-        ]
-    ],
     accuracyPerRound: [68, 82, 92],
     autoAdvanceDelay: 8000,
     // Per-hotel pattern assignments (2-3 each, with realistic overlap)
@@ -199,14 +182,12 @@ function initPhase1() {
     const gauge = document.getElementById('alertGauge');
     const gaugeValue = document.getElementById('alertGaugeValue');
     const verdict = document.getElementById('alertVerdict');
-    const insight = document.getElementById('alertInsight');
 
     // Reset
     tags.forEach(t => { t.style.opacity = '0'; t.style.transform = 'translateY(8px)'; });
     if (gauge) { gauge.style.width = '0%'; }
     if (gaugeValue) gaugeValue.textContent = '0%';
     if (verdict) verdict.style.opacity = '0';
-    if (insight) insight.style.opacity = '0';
 
     // Stagger tags
     tags.forEach((tag, i) => {
@@ -234,14 +215,6 @@ function initPhase1() {
             verdict.style.opacity = '1';
         }
     }, gaugeDelay + 1400);
-
-    // Show insight
-    setTimeout(() => {
-        if (insight) {
-            insight.style.transition = 'opacity 0.5s ease';
-            insight.style.opacity = '1';
-        }
-    }, gaugeDelay + 2000);
 }
 
 // ============================================
@@ -252,14 +225,19 @@ function initPhase2() {
     if (networkAnimating) return;
     networkAnimating = true;
 
+    // Fade in intro text
+    const intro = document.getElementById('phase2Intro');
+    if (intro) {
+        intro.style.opacity = '0';
+        setTimeout(() => { intro.style.opacity = '1'; }, 100);
+    }
+
     const detectionEl = document.getElementById('networkDetectionRate');
-    const feedEl = document.getElementById('networkLiveFeed');
     const nodes = document.querySelectorAll('.network-hotel-node');
     const center = document.getElementById('networkCenter');
 
     // Reset
     if (detectionEl) detectionEl.textContent = '45%';
-    if (feedEl) feedEl.innerHTML = '';
     nodes.forEach(n => n.classList.remove('active', 'sending'));
     if (center) center.classList.remove('pulsing');
     // Hide all pattern cards
@@ -279,7 +257,6 @@ async function runNetworkRounds(round) {
     const nodes = document.querySelectorAll('.network-hotel-node');
     const center = document.getElementById('networkCenter');
     const detectionEl = document.getElementById('networkDetectionRate');
-    const feedEl = document.getElementById('networkLiveFeed');
 
     // Step 1: Hotels light up (analyzing) + reveal this round's pattern cards
     const revealIndices = DEMO2_CONFIG.revealPerRound[round] || [];
@@ -321,22 +298,6 @@ async function runNetworkRounds(round) {
     nodes.forEach(n => { n.classList.remove('sending'); n.classList.add('active'); });
     await sleep(500);
     nodes.forEach(n => n.classList.remove('active'));
-
-    // Step 6: Show live feed items for this round
-    const feedItems = DEMO2_CONFIG.liveFeed[round] || [];
-    for (const item of feedItems) {
-        const div = document.createElement('div');
-        div.className = 'feed-item';
-        div.innerHTML = `<span class="feed-pattern">${item.text}</span><span class="feed-source">learned from ${item.sources}</span>`;
-        div.style.opacity = '0';
-        div.style.transform = 'translateY(8px)';
-        if (feedEl) feedEl.appendChild(div);
-        await sleep(50);
-        div.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        div.style.opacity = '1';
-        div.style.transform = 'translateY(0)';
-        await sleep(300);
-    }
 
     await sleep(600);
     runNetworkRounds(round + 1);
@@ -382,10 +343,15 @@ function updateRiskAssessment() {
     }
 
     if (factorsEl) {
+        const iconMap = {
+            high: '<svg class="icon-inline" viewBox="0 0 24 24" stroke="#ef4444"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+            medium: '<svg class="icon-inline" viewBox="0 0 24 24" stroke="#f59e0b"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>',
+            network: '<svg class="icon-inline" viewBox="0 0 24 24" stroke="#3b82f6"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/><line x1="5" y1="19" x2="19" y2="19"/></svg>',
+        };
         const relevantFactors = result.factors.filter(f => f.impact !== 'network' || result.score >= 0.3);
         factorsEl.innerHTML = relevantFactors.map(f => `
             <div class="d2-factor ${f.impact}">
-                <span class="factor-dot ${f.impact}"></span>
+                ${iconMap[f.impact] || ''}
                 <span>${f.text}</span>
             </div>
         `).join('');
@@ -443,12 +409,14 @@ function initDemo2() {
     // Build hotel network nodes for Phase 2
     const ring = document.getElementById('networkRing');
     if (ring) {
+        const warnSvg = '<svg class="warn-icon" viewBox="0 0 24 24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+
         DEMO2_CONFIG.propertyNames.forEach((name, i) => {
             const node = document.createElement('div');
             node.className = 'network-hotel-node';
             node.dataset.hotelIndex = i;
             const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
-            const radius = 42; // % from center
+            const radius = 32; // % from center — closer to center
             const x = 50 + radius * Math.cos(angle);
             const y = 50 + radius * Math.sin(angle);
             node.style.left = x + '%';
@@ -457,20 +425,20 @@ function initDemo2() {
             node.title = name;
             ring.appendChild(node);
 
-            // Pattern card
+            // Pattern card — further out from the hotel icon
             const card = document.createElement('div');
             card.className = 'pattern-card';
             card.dataset.hotelIndex = i;
-            // Position card: alternate left/right based on which half of circle
             const isRight = (x > 50);
-            const cardX = isRight ? x + 6 : x - 6;
+            const cardOffset = 10; // % offset from hotel icon
+            const cardX = isRight ? x + cardOffset : x - cardOffset;
             card.style.left = cardX + '%';
             card.style.top = y + '%';
             card.classList.add(isRight ? 'card-right' : 'card-left');
 
             const patterns = DEMO2_CONFIG.hotelPatterns[i] || [];
             card.innerHTML = `<span class="card-name">${name}</span>` +
-                patterns.map(p => `<span class="card-pattern">${p}</span>`).join('');
+                patterns.map(p => `<span class="card-pattern">${warnSvg}${p}</span>`).join('');
             ring.appendChild(card);
         });
     }
@@ -480,7 +448,7 @@ function initDemo2() {
     if (linesG && ring) {
         DEMO2_CONFIG.propertyNames.forEach((_, i) => {
             const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
-            const radius = 0.42;
+            const radius = 0.32;
             const x = 200 + radius * 200 * Math.cos(angle);
             const y = 200 + radius * 200 * Math.sin(angle);
             const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
