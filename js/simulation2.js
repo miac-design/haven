@@ -221,9 +221,6 @@ function initPhase1() {
             insight.style.opacity = '1';
         }
     }, gaugeDelay + 2000);
-
-    // Auto-advance
-    autoAdvanceTimer = setTimeout(() => goToPhase(2), DEMO2_CONFIG.autoAdvanceDelay);
 }
 
 // ============================================
@@ -388,18 +385,16 @@ function animateCounter(el, from, to, duration) {
 
 function watchFullDemo() {
     goToPhase(1);
-    // Phase 1 auto-advances after 8s, Phase 2 runs ~12s, then Phase 3
-    // Set a timer for Phase 2 → 3 transition after Phase 2 completes
+    // Auto-play: Phase 1 (8s) → Phase 2 → wait for animation → Phase 3
     setTimeout(() => {
-        if (currentPhase === 2) {
-            const checkDone = setInterval(() => {
-                if (!networkAnimating) {
-                    clearInterval(checkDone);
-                    setTimeout(() => goToPhase(3), 2000);
-                }
-            }, 500);
-        }
-    }, DEMO2_CONFIG.autoAdvanceDelay + 500);
+        goToPhase(2);
+        const checkDone = setInterval(() => {
+            if (!networkAnimating) {
+                clearInterval(checkDone);
+                setTimeout(() => goToPhase(3), 2000);
+            }
+        }, 500);
+    }, DEMO2_CONFIG.autoAdvanceDelay);
 }
 
 // ============================================
