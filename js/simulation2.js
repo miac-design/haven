@@ -235,15 +235,15 @@ function initPhase2() {
     const detectionEl = document.getElementById('networkDetectionRate');
     const nodes = document.querySelectorAll('.network-hotel-node');
     const center = document.getElementById('networkCenter');
+    const summary = document.getElementById('networkSummary');
 
     // Reset
     if (detectionEl) detectionEl.textContent = '45%';
-    nodes.forEach(n => n.classList.remove('active', 'sending'));
+    nodes.forEach(n => { n.classList.remove('active', 'sending', 'contributed'); });
     if (center) center.classList.remove('pulsing');
-    // Hide all pattern cards
-    document.querySelectorAll('.pattern-card').forEach(c => {
-        c.classList.remove('visible', 'dimmed');
-    });
+    if (summary) summary.style.opacity = '0';
+    // Remove any lingering anim cards
+    document.querySelectorAll('.anim-card').forEach(c => c.remove());
 
     runNetworkRounds(0);
 }
@@ -251,55 +251,80 @@ function initPhase2() {
 async function runNetworkRounds(round) {
     if (round >= 3) {
         networkAnimating = false;
+        // Show summary
+        const summary = document.getElementById('networkSummary');
+        if (summary) summary.style.opacity = '1';
         return;
     }
 
     const nodes = document.querySelectorAll('.network-hotel-node');
     const center = document.getElementById('networkCenter');
     const detectionEl = document.getElementById('networkDetectionRate');
+    const ring = document.getElementById('networkRing');
 
-    // Step 1: Hotels light up (analyzing) + reveal this round's pattern cards
-    const revealIndices = DEMO2_CONFIG.revealPerRound[round] || [];
+    const warnSvg = '<svg class="warn-icon" viewBox="0 0 24 24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+
+    // Step 1: Hotels light up
     const shuffled = Array.from(nodes).sort(() => Math.random() - 0.5);
     for (let i = 0; i < shuffled.length; i++) {
         await sleep(80);
         shuffled[i].classList.add('active');
     }
-    // Reveal pattern cards for this round's hotels
+    await sleep(200);
+
+    // Step 2: Show pattern cards briefly for this round's hotels (1-2 at a time)
+    const revealIndices = DEMO2_CONFIG.revealPerRound[round] || [];
     for (const idx of revealIndices) {
-        const card = document.querySelector(`.pattern-card[data-hotel-index="${idx}"]`);
-        if (card) {
-            card.classList.add('visible');
-        }
-        await sleep(150);
+        const node = document.querySelector(`.network-hotel-node[data-hotel-index="${idx}"]`);
+        if (!node || !ring) continue;
+
+        const x = parseFloat(node.style.left);
+        const y = parseFloat(node.style.top);
+        const isRight = x > 50;
+        const patterns = DEMO2_CONFIG.hotelPatterns[idx] || [];
+        const name = DEMO2_CONFIG.propertyNames[idx];
+
+        // Create brief anim card
+        const card = document.createElement('div');
+        card.className = 'anim-card';
+        card.style.left = (isRight ? x + 8 : x - 8) + '%';
+        card.style.top = y + '%';
+        card.style.transform = isRight ? 'translateY(-50%)' : 'translateY(-50%) translateX(-100%)';
+        card.innerHTML = `<span class="tooltip-name">${name}</span>` +
+            patterns.map(p => `<span class="tooltip-pattern">${warnSvg}${p}</span>`).join('');
+        ring.appendChild(card);
+
+        // Show
+        await sleep(50);
+        card.classList.add('show');
+        await sleep(1500);
+
+        // Hide and add checkmark
+        card.classList.remove('show');
+        node.classList.add('contributed');
+        await sleep(300);
+        card.remove();
     }
-    await sleep(300);
 
-    // Step 2: Patterns fly to center (sending) — dim revealed cards
+    // Step 3: Sending to center
     nodes.forEach(n => { n.classList.remove('active'); n.classList.add('sending'); });
-    revealIndices.forEach(idx => {
-        const card = document.querySelector(`.pattern-card[data-hotel-index="${idx}"]`);
-        if (card) card.classList.add('dimmed');
-    });
-    await sleep(800);
-
-    // Step 3: Center pulses
-    if (center) center.classList.add('pulsing');
     await sleep(600);
 
-    // Step 4: Update detection rate
+    // Step 4: Center pulses
+    if (center) center.classList.add('pulsing');
+    await sleep(500);
+
+    // Step 5: Update detection rate
     const targetAccuracy = DEMO2_CONFIG.accuracyPerRound[round];
     const prevAccuracy = round === 0 ? 45 : DEMO2_CONFIG.accuracyPerRound[round - 1];
     animateCounter(detectionEl, prevAccuracy, targetAccuracy, 800);
     await sleep(800);
 
-    // Step 5: Radiate back
+    // Step 6: Radiate back
     if (center) center.classList.remove('pulsing');
-    nodes.forEach(n => { n.classList.remove('sending'); n.classList.add('active'); });
-    await sleep(500);
-    nodes.forEach(n => n.classList.remove('active'));
+    nodes.forEach(n => { n.classList.remove('sending'); });
+    await sleep(400);
 
-    await sleep(600);
     runNetworkRounds(round + 1);
 }
 
@@ -408,38 +433,45 @@ function watchFullDemo() {
 function initDemo2() {
     // Build hotel network nodes for Phase 2
     const ring = document.getElementById('networkRing');
+    const warnSvg = '<svg class="warn-icon" viewBox="0 0 24 24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+
+    // Create a single shared tooltip element
+    let tooltip = null;
     if (ring) {
-        const warnSvg = '<svg class="warn-icon" viewBox="0 0 24 24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+        tooltip = document.createElement('div');
+        tooltip.className = 'hotel-tooltip';
+        ring.appendChild(tooltip);
 
         DEMO2_CONFIG.propertyNames.forEach((name, i) => {
             const node = document.createElement('div');
             node.className = 'network-hotel-node';
             node.dataset.hotelIndex = i;
             const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
-            const radius = 32; // % from center — closer to center
+            const radius = 36;
             const x = 50 + radius * Math.cos(angle);
             const y = 50 + radius * Math.sin(angle);
             node.style.left = x + '%';
             node.style.top = y + '%';
-            node.innerHTML = `<span class="node-icon">${DEMO2_CONFIG.propertyIcons[i]}</span>`;
+            node.innerHTML = `<span class="node-icon">${DEMO2_CONFIG.propertyIcons[i]}</span>` +
+                '<span class="node-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>';
             node.title = name;
             ring.appendChild(node);
 
-            // Pattern card — further out from the hotel icon
-            const card = document.createElement('div');
-            card.className = 'pattern-card';
-            card.dataset.hotelIndex = i;
-            const isRight = (x > 50);
-            const cardOffset = 10; // % offset from hotel icon
-            const cardX = isRight ? x + cardOffset : x - cardOffset;
-            card.style.left = cardX + '%';
-            card.style.top = y + '%';
-            card.classList.add(isRight ? 'card-right' : 'card-left');
-
-            const patterns = DEMO2_CONFIG.hotelPatterns[i] || [];
-            card.innerHTML = `<span class="card-name">${name}</span>` +
-                patterns.map(p => `<span class="card-pattern">${warnSvg}${p}</span>`).join('');
-            ring.appendChild(card);
+            // Hover tooltip
+            node.addEventListener('mouseenter', () => {
+                if (!node.classList.contains('contributed')) return;
+                const patterns = DEMO2_CONFIG.hotelPatterns[i] || [];
+                const isRight = x > 50;
+                tooltip.innerHTML = `<span class="tooltip-name">${name}</span>` +
+                    patterns.map(p => `<span class="tooltip-pattern">${warnSvg}${p}</span>`).join('');
+                tooltip.style.left = (isRight ? x + 8 : x - 8) + '%';
+                tooltip.style.top = y + '%';
+                tooltip.style.transform = isRight ? 'translateY(-50%)' : 'translateY(-50%) translateX(-100%)';
+                tooltip.classList.add('show');
+            });
+            node.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
         });
     }
 
