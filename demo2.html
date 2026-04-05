@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAVEN | Story Demo</title>
+    <meta name="description" content="Experience HAVEN's trafficking detection through a guided story demo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23468f7f'/%3E%3Cstop offset='100%25' stop-color='%232e5c53'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 5 L90 25 L90 65 C90 80 70 95 50 95 C30 95 10 80 10 65 L10 25 Z' fill='url(%23g)'/%3E%3Cpath d='M50 20 L70 32 L70 55 C70 65 60 75 50 75 C40 75 30 65 30 55 L30 32 Z' fill='white' opacity='0.9'/%3E%3Ccircle cx='50' cy='45' r='8' fill='%23468f7f'/%3E%3C/svg%3E">
+    <style>
+        /* ── Phase container ── */
+        .phase-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            min-height: 60vh;
+        }
+        .phase-panel {
+            display: none;
+            animation: phaseFadeIn 0.5s ease;
+        }
+        .phase-panel.phase-active {
+            display: block;
+        }
+        @keyframes phaseFadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Progress indicator ── */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            padding: 6.5rem 1rem 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--neutral-400, #888);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .progress-step .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--neutral-200, #e5e7eb);
+            color: var(--neutral-500, #666);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .progress-step.active .step-dot {
+            background: linear-gradient(135deg, #5fa899, #367366);
+            color: #fff;
+        }
+        .progress-step.active {
+            color: var(--text-primary, #1a2e2a);
+            font-weight: 600;
+        }
+        .progress-step.completed .step-dot {
+            background: #5fa899;
+            color: #fff;
+        }
+        .progress-connector {
+            width: 40px;
+            height: 2px;
+            background: var(--neutral-200, #e5e7eb);
+            align-self: center;
+        }
+
+        /* ── Controls row ── */
+        .demo2-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Phase 1: The Alert ── */
+        .alert-card {
+            background: #1a2e2a;
+            border-radius: 16px;
+            padding: 2.5rem;
+            color: #fff;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .alert-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+        .alert-tags {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+        .alert-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        .alert-tag .red-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f87171;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px rgba(248, 113, 113, 0.6);
+        }
+
+        /* Alert gauge */
+        .alert-gauge-container {
+            margin: 1.5rem 0;
+        }
+        .alert-gauge-track {
+            height: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        .alert-gauge-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+            border-radius: 999px;
+            transition: width 1.2s ease-out;
+        }
+        .alert-gauge-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        .alert-verdict {
+            font-size: 1.05rem;
+            color: #fbbf24;
+            font-weight: 600;
+            margin-top: 0.25rem;
+            opacity: 0;
+        }
+        .alert-insight {
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            opacity: 0;
+        }
+        .alert-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* ── Phase 2: The Network ── */
+        .network-viz {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 2rem;
+        }
+        .network-hotel-node {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            margin-left: -22px;
+            margin-top: -22px;
+            border-radius: 50%;
+            background: #1a2e2a;
+            border: 2px solid rgba(95,168,153,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+        .network-hotel-node.active {
+            border-color: #5fa899;
+            box-shadow: 0 0 16px rgba(95,168,153,0.5);
+            transform: scale(1.1);
+        }
+        .network-hotel-node.sending {
+            border-color: #fbbf24;
+            box-shadow: 0 0 12px rgba(251,191,36,0.4);
+        }
+        .node-icon {
+            font-size: 1.2rem;
+        }
+        .network-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a2e2a, #2d4a42);
+            border: 3px solid rgba(95,168,153,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            transition: all 0.4s ease;
+        }
+        .network-center.pulsing {
+            box-shadow: 0 0 30px rgba(95,168,153,0.5);
+            border-color: #5fa899;
+        }
+        .network-center .center-label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2px;
+        }
+        .network-center .center-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #5fa899;
+        }
+
+        /* Connector lines (SVG) */
+        .network-lines {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        /* Live feed */
+        .live-feed-section {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+        .live-feed-section h3 {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--neutral-400, #888);
+            margin-bottom: 0.75rem;
+        }
+        .feed-item {
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .feed-pattern {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary, #1a2e2a);
+        }
+        .feed-source {
+            font-size: 0.78rem;
+            color: var(--neutral-400, #888);
+            margin-top: 0.15rem;
+        }
+
+        /* Privacy banner */
+        .privacy-banner {
+            text-align: center;
+            padding: 1rem 1.5rem;
+            background: rgba(95,168,153,0.08);
+            border: 1px solid rgba(95,168,153,0.2);
+            border-radius: 12px;
+            max-width: 500px;
+            margin: 1.5rem auto;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #367366;
+        }
+        .privacy-banner svg {
+            width: 18px;
+            height: 18px;
+            vertical-align: middle;
+            margin-right: 0.4rem;
+            stroke: #367366;
+        }
+
+        /* ── Phase 3: Try It Yourself ── */
+        .try-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .try-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-primary, #1a2e2a);
+            margin-bottom: 0.4rem;
+        }
+        .control-group select {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--neutral-200, #e5e7eb);
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-primary, #1a2e2a);
+            background: #fff;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .control-group select:focus {
+            outline: none;
+            border-color: #5fa899;
+        }
+
+        /* Risk result panel */
+        .try-result {
+            background: #1a2e2a;
+            border-radius: 16px;
+            padding: 2rem;
+            color: #fff;
+        }
+        .d2-gauge-track {
+            height: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .gauge-fill-bar {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.4s ease;
+        }
+        .gauge-fill-bar.risk-low { background: #22c55e; }
+        .gauge-fill-bar.risk-moderate { background: #f59e0b; }
+        .gauge-fill-bar.risk-elevated { background: #f97316; }
+        .gauge-fill-bar.risk-high { background: #ef4444; }
+
+        .risk-pct {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .risk-pct.risk-low { color: #22c55e; }
+        .risk-pct.risk-moderate { color: #f59e0b; }
+        .risk-pct.risk-elevated { color: #f97316; }
+        .risk-pct.risk-high { color: #ef4444; }
+
+        .risk-level-label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+        .risk-level-label.risk-low { color: #22c55e; }
+        .risk-level-label.risk-moderate { color: #f59e0b; }
+        .risk-level-label.risk-elevated { color: #f97316; }
+        .risk-level-label.risk-high { color: #ef4444; }
+
+        .d2-factors {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .d2-factor {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+        .factor-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .factor-dot.high { background: #ef4444; }
+        .factor-dot.medium { background: #f59e0b; }
+        .factor-dot.network { background: #3b82f6; }
+
+        .rec-text {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .rec-low { background: rgba(34,197,94,0.15); color: #86efac; }
+        .rec-moderate { background: rgba(245,158,11,0.15); color: #fcd34d; }
+        .rec-elevated { background: rgba(249,115,22,0.15); color: #fdba74; }
+        .rec-high { background: rgba(239,68,68,0.15); color: #fca5a5; }
+
+        .try-disclaimer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--neutral-400, #888);
+            max-width: 700px;
+            margin: 2rem auto 0;
+            line-height: 1.5;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .try-grid { grid-template-columns: 1fr; }
+            .network-viz { width: 300px; height: 300px; }
+            .progress-step span:not(.step-dot) { display: none; }
+        }
+
+        /* ── Demo hero ── */
+        .demo2-hero {
+            padding: 6rem 0 1rem;
+            text-align: center;
+        }
+        .demo2-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary, #1a2e2a);
+            margin-bottom: 0.75rem;
+        }
+        .demo2-hero p {
+            font-size: 1rem;
+            color: var(--text-secondary, #4a6b63);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ambient Background -->
+    <div class="ambient-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#5fa899" />
+                            <stop offset="100%" stop-color="#367366" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M20 2 L36 10 L36 26 C36 33 28 38 20 38 C12 38 4 33 4 26 L4 10 Z" fill="url(#logoGrad)" />
+                    <path d="M20 10 L28 14.5 L28 23 C28 27 24 30 20 30 C16 30 12 27 12 23 L12 14.5 Z" fill="white" opacity="0.95" />
+                    <circle cx="20" cy="19" r="4" fill="#468f7f" />
+                </svg>
+                <span class="logo-text">HAVEN</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Back to Home</a>
+                <a href="demo.html">Original Demo</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Progress Indicator -->
+    <div class="progress-bar">
+        <div class="progress-step active" data-phase="1">
+            <span class="step-dot">1</span>
+            <span>The Alert</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step" data-phase="2">
+            <span class="step-dot">2</span>
+            <span>The Network</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step" data-phase="3">
+            <span class="step-dot">3</span>
+            <span>Try It Yourself</span>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="demo2-controls">
+        <button class="btn btn-primary" id="watchFullBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            Watch Full Demo
+        </button>
+        <button class="btn btn-secondary" id="startOverBtn">Start Over</button>
+    </div>
+
+    <!-- Phase Panels -->
+    <div class="phase-wrapper">
+
+        <!-- ===== Phase 1: The Alert ===== -->
+        <div class="phase-panel phase-active" id="phase1">
+            <div class="alert-card">
+                <h2>A booking just came in at Harbor Inn</h2>
+                <div class="alert-tags">
+                    <div class="alert-tag">
+                        <span class="red-dot"></span>
+                        <span>Booked 2 hours ago</span>
+                    </div>
+                    <div class="alert-tag">
+                        <span class="red-dot"></span>
+                        <span>Paying with cash</span>
+                    </div>
+                    <div class="alert-tag">
+                        <span class="red-dot"></span>
+                        <span>Stay: just 3 hours</span>
+                    </div>
+                    <div class="alert-tag">
+                        <span class="red-dot"></span>
+                        <span>Someone else made the reservation</span>
+                    </div>
+                </div>
+
+                <div class="alert-gauge-container">
+                    <div class="alert-gauge-track">
+                        <div class="alert-gauge-fill" id="alertGauge"></div>
+                    </div>
+                    <div class="alert-gauge-value" id="alertGaugeValue">0%</div>
+                    <div class="alert-verdict" id="alertVerdict">Elevated Risk &mdash; Duty manager notified</div>
+                </div>
+
+                <div class="alert-insight" id="alertInsight">
+                    This alert was possible because 12 hotels learned together &mdash; without sharing a single guest record.
+                </div>
+
+                <div class="alert-actions">
+                    <button class="btn btn-primary" id="seeHowBtn">See How &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Phase 2: The Network ===== -->
+        <div class="phase-panel" id="phase2">
+            <div class="network-viz" id="networkRing">
+                <!-- SVG connector lines -->
+                <svg class="network-lines" viewBox="0 0 400 400">
+                    <g stroke="rgba(95,168,153,0.15)" stroke-width="1" fill="none" id="connectorLines"></g>
+                </svg>
+                <!-- Center node -->
+                <div class="network-center" id="networkCenter">
+                    <span class="center-label">Detection</span>
+                    <span class="center-value" id="networkDetectionRate">45%</span>
+                </div>
+                <!-- Hotel nodes injected by JS -->
+            </div>
+
+            <div class="live-feed-section">
+                <h3>What the network is learning</h3>
+                <div id="networkLiveFeed"></div>
+            </div>
+
+            <div class="privacy-banner">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                Zero guest data left any hotel. Only patterns were shared.
+            </div>
+
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn btn-primary" id="tryYourselfBtn">Try It Yourself &rarr;</button>
+            </div>
+        </div>
+
+        <!-- ===== Phase 3: Try It Yourself ===== -->
+        <div class="phase-panel" id="phase3">
+            <div class="try-grid">
+                <!-- Left: Controls -->
+                <div class="try-controls">
+                    <div class="control-group">
+                        <label>When was it booked?</label>
+                        <select id="d2LeadTime">
+                            <option value="168">1 week ago</option>
+                            <option value="48">2 days ago</option>
+                            <option value="6">Same day</option>
+                            <option value="2">2 hours ago</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>How are they paying?</label>
+                        <select id="d2Payment">
+                            <option value="credit">Credit card</option>
+                            <option value="debit">Debit</option>
+                            <option value="prepaid">Prepaid card</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>How long is the stay?</label>
+                        <select id="d2Duration">
+                            <option value="3">3 nights</option>
+                            <option value="1">1 night</option>
+                            <option value="0.5">Just a few hours</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Who booked it?</label>
+                        <select id="d2Source">
+                            <option value="direct">Guest directly</option>
+                            <option value="ota">Travel site</option>
+                            <option value="walkin">Walked in</option>
+                            <option value="thirdparty">Someone else</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Right: Live result -->
+                <div class="try-result">
+                    <div class="d2-gauge-track">
+                        <div class="gauge-fill-bar risk-low" id="d2GaugeFill" style="width: 0%"></div>
+                    </div>
+                    <div class="risk-pct risk-low" id="d2RiskValue">0%</div>
+                    <div class="risk-level-label risk-low" id="d2RiskLabel">Low Risk</div>
+                    <div class="d2-factors" id="d2RiskFactors"></div>
+                    <div class="rec-text rec-low" id="d2Recommendation">Normal booking. No action needed.</div>
+                </div>
+            </div>
+
+            <p class="try-disclaimer">This is a simulation with synthetic data. In production, HAVEN integrates directly into hotel booking systems like Opera and Cloudbeds.</p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 3rem 0; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 3rem;">
+        <a href="index.html" style="color: #468f7f; text-decoration: none; font-weight: 500;">&larr; Back to HAVEN Home</a>
+    </footer>
+
+    <script src="js/simulation2.js"></script>
+</body>
+
+</html>
