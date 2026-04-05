@@ -406,6 +406,13 @@ function autoAssessSuspiciousBooking() {
     const details = document.getElementById('autoBookingDetails');
     if (details) details.style.display = 'block';
 
+    // Set a random hotel name
+    const hotelEl = document.getElementById('flaggedHotelName');
+    if (hotelEl) {
+        const name = CONFIG.propertyNames[Math.floor(Math.random() * CONFIG.propertyNames.length)];
+        hotelEl.textContent = name;
+    }
+
     // Show "Try Your Own" button
     const tryBtn = document.getElementById('newBookingBtn');
     if (tryBtn) tryBtn.style.display = '';

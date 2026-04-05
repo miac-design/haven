@@ -387,16 +387,17 @@
                             <div class="ring-center">
                                 <span class="ring-value" id="modelAccuracy">0%</span>
                                 <span class="ring-label">Suspicious Bookings Caught</span>
+                                <span class="ring-sublabel" style="font-size: 0.65rem; color: var(--neutral-500); display: block; margin-top: 2px;">of confirmed cases in test data</span>
                             </div>
                         </div>
                         <div class="coordinator-stats">
                             <div class="coord-stat">
                                 <span class="coord-value" id="roundNumber">0</span>
-                                <span class="coord-label">Training Steps</span>
+                                <span class="coord-label">Learning Rounds</span>
                             </div>
                             <div class="coord-stat">
                                 <span class="coord-value" id="gradientCount">0</span>
-                                <span class="coord-label">Hotels Contributed</span>
+                                <span class="coord-label">Updates Shared</span>
                             </div>
                             <div class="coord-stat stat-red-flags">
                                 <span class="coord-value" id="patternsLearned">0</span>
@@ -440,6 +441,7 @@
 
                     <!-- Booking details shown after auto-assessment -->
                     <div class="auto-booking-details" id="autoBookingDetails" style="display:none;">
+                        <p style="color: var(--primary-400); font-size: 0.85rem; margin: 0 0 0.4rem; font-weight: 600;">📍 <span id="flaggedHotelName">Grand Hotel</span></p>
                         <p style="color: var(--neutral-400); font-size: 0.8rem; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Incoming booking:</p>
                         <div class="auto-booking-tags" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;">
                             <span class="booking-tag">Last minute (2 hrs notice)</span>
