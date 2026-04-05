@@ -52,6 +52,27 @@ const DEMO2_CONFIG = {
     ],
     accuracyPerRound: [68, 82, 92],
     autoAdvanceDelay: 8000,
+    // Per-hotel pattern assignments (2-3 each, with realistic overlap)
+    hotelPatterns: [
+        ['Cash payment', 'Short stays'],                        // Grand Hotel
+        ['Booking < 4 hrs', 'Declined housekeeping'],           // City Suites
+        ['Third-party booker', 'Prepaid card'],                 // Harbor Inn
+        ['Cash payment', 'Weekend-only bookings'],              // Metro Lodge
+        ['Third-party booker', 'Local address / out-of-state ID'], // Plaza Hotel
+        ['Prepaid card', 'Same-day booking'],                   // Urban Stay
+        ['Short lead time', 'Prepaid card'],                    // Riverside Inn
+        ['Declined housekeeping', 'Short stays'],               // Central Hotel
+        ['Weekend-only bookings', 'Multiple room keys'],        // Park Suites
+        ['High visitor traffic', 'Cash payment'],               // Downtown Inn
+        ['Booking < 4 hrs', 'Multiple room keys'],              // Coast Hotel
+        ['Walk-in booking', 'Third-party booker'],              // Valley Lodge
+    ],
+    // Which hotels reveal patterns in each round (indices)
+    revealPerRound: [
+        [0, 1, 2, 3],    // Round 1: first 4 hotels
+        [4, 5, 6, 7],    // Round 2: next 4
+        [8, 9, 10, 11],  // Round 3: last 4
+    ],
 };
 
 // ============================================
@@ -241,6 +262,10 @@ function initPhase2() {
     if (feedEl) feedEl.innerHTML = '';
     nodes.forEach(n => n.classList.remove('active', 'sending'));
     if (center) center.classList.remove('pulsing');
+    // Hide all pattern cards
+    document.querySelectorAll('.pattern-card').forEach(c => {
+        c.classList.remove('visible', 'dimmed');
+    });
 
     runNetworkRounds(0);
 }
@@ -256,16 +281,29 @@ async function runNetworkRounds(round) {
     const detectionEl = document.getElementById('networkDetectionRate');
     const feedEl = document.getElementById('networkLiveFeed');
 
-    // Step 1: Hotels light up (analyzing)
+    // Step 1: Hotels light up (analyzing) + reveal this round's pattern cards
+    const revealIndices = DEMO2_CONFIG.revealPerRound[round] || [];
     const shuffled = Array.from(nodes).sort(() => Math.random() - 0.5);
     for (let i = 0; i < shuffled.length; i++) {
         await sleep(80);
         shuffled[i].classList.add('active');
     }
-    await sleep(400);
+    // Reveal pattern cards for this round's hotels
+    for (const idx of revealIndices) {
+        const card = document.querySelector(`.pattern-card[data-hotel-index="${idx}"]`);
+        if (card) {
+            card.classList.add('visible');
+        }
+        await sleep(150);
+    }
+    await sleep(300);
 
-    // Step 2: Patterns fly to center (sending)
+    // Step 2: Patterns fly to center (sending) — dim revealed cards
     nodes.forEach(n => { n.classList.remove('active'); n.classList.add('sending'); });
+    revealIndices.forEach(idx => {
+        const card = document.querySelector(`.pattern-card[data-hotel-index="${idx}"]`);
+        if (card) card.classList.add('dimmed');
+    });
     await sleep(800);
 
     // Step 3: Center pulses
@@ -408,6 +446,7 @@ function initDemo2() {
         DEMO2_CONFIG.propertyNames.forEach((name, i) => {
             const node = document.createElement('div');
             node.className = 'network-hotel-node';
+            node.dataset.hotelIndex = i;
             const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
             const radius = 42; // % from center
             const x = 50 + radius * Math.cos(angle);
@@ -417,6 +456,22 @@ function initDemo2() {
             node.innerHTML = `<span class="node-icon">${DEMO2_CONFIG.propertyIcons[i]}</span>`;
             node.title = name;
             ring.appendChild(node);
+
+            // Pattern card
+            const card = document.createElement('div');
+            card.className = 'pattern-card';
+            card.dataset.hotelIndex = i;
+            // Position card: alternate left/right based on which half of circle
+            const isRight = (x > 50);
+            const cardX = isRight ? x + 6 : x - 6;
+            card.style.left = cardX + '%';
+            card.style.top = y + '%';
+            card.classList.add(isRight ? 'card-right' : 'card-left');
+
+            const patterns = DEMO2_CONFIG.hotelPatterns[i] || [];
+            card.innerHTML = `<span class="card-name">${name}</span>` +
+                patterns.map(p => `<span class="card-pattern">${p}</span>`).join('');
+            ring.appendChild(card);
         });
     }
 
